@@ -15,9 +15,9 @@ jobs:
         include:
           - java: 8
             sonar: ""
-            archive: "yes"
           - java: 11
             sonar: "9.0.0.45539"
+            archive: "yes"
 
     runs-on: ubuntu-latest
 
