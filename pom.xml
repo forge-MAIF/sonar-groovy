@@ -70,7 +70,7 @@
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/Inform-Software/sonar-groovy</url>
+      <url>https://maven.pkg.github.com/forge-MAIF/sonar-groovy</url>
     </repository>
   </distributionManagement>
 
