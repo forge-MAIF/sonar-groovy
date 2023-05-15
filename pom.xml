@@ -75,7 +75,7 @@
   </distributionManagement>
 
   <properties>
-    <sonar.version>8.0</sonar.version>
+    <sonar.version>8.9.0.43852</sonar.version>
     <orchestrator.version>3.11</orchestrator.version>
 
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
