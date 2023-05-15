@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.io.FileUtils;
 import org.codenarc.CodeNarcRunner;
 import org.codenarc.rule.Violation;
+import org.codenarc.source.AbstractSourceCode;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.rule.ActiveRule;
 import org.sonar.api.batch.rule.ActiveRules;
@@ -45,6 +46,7 @@ import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.LoggerLevel;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.groovy.codenarc.CodeNarcXMLParser.CodeNarcViolation;
 import org.sonar.plugins.groovy.foundation.Groovy;
@@ -60,6 +62,12 @@ public class CodeNarcSensor implements Sensor {
   private final ActiveRules activeRules;
   private final GroovyFileSystem groovyFileSystem;
 
+  static {
+    // Hide CodeNarc logs
+    Logger codeNarcLogger = Loggers.get(AbstractSourceCode.class);
+    codeNarcLogger.setLevel(LoggerLevel.ERROR);
+  }
+  
   public CodeNarcSensor(ActiveRules activeRules, GroovyFileSystem groovyFileSystem) {
     this.activeRules = activeRules;
     this.groovyFileSystem = groovyFileSystem;
