@@ -37,6 +37,8 @@ jobs:
 
       - name: Build
         run: mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 #      - name: Upload Plugin JAR
 #        uses: actions/upload-artifact@v3
