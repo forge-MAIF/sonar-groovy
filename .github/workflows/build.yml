@@ -11,10 +11,10 @@ jobs:
         java: [11, 17]
         sonar:
           - ""
-          - "9.4.0.54424"
+          - "9.9.1.69595"
         include:
           - java: 17
-            sonar: "9.4.0.54424"
+            sonar: "9.9.1.69595"
             archive: "yes"
 
     runs-on: ubuntu-latest

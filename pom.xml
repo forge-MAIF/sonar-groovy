@@ -10,7 +10,7 @@
 
   <groupId>org.sonarsource.groovy</groupId>
   <artifactId>groovy</artifactId>
-  <version>2.0-SNAPSHOT</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
 
   <name>Sonar Groovy</name>
@@ -75,7 +75,8 @@
   </distributionManagement>
 
   <properties>
-    <sonar.version>8.9.0.43852</sonar.version>
+    <revision>2.0-SNAPSHOT</revision>
+    <sonar.version>9.4.0.54424</sonar.version>
     <orchestrator.version>3.11</orchestrator.version>
 
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -85,14 +86,14 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.sonarsource.sonarqube</groupId>
+        <groupId>org.sonarsource.api.plugin</groupId>
         <artifactId>sonar-plugin-api</artifactId>
-        <version>${sonar.version}</version>
+        <version>9.14.0.375</version>
       </dependency>
       <dependency>
         <groupId>org.sonarsource.sonarqube</groupId>
         <artifactId>sonar-plugin-api-impl</artifactId>
-        <version>${sonar.version}</version>
+        <version>9.9.1.69595</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -204,7 +205,29 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <minimizeJar>true</minimizeJar>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
