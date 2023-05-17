@@ -36,10 +36,10 @@ jobs:
           restore-keys: ${{ runner.os }}-maven
 
       - name: Build
-        run: mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always verify
+        run: mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always deploy
 
-      - name: Upload Plugin JAR
-        uses: actions/upload-artifact@v3
-        with:
-          name: Plugin
-          path: sonar-groovy-plugin/target/*.jar
+#      - name: Upload Plugin JAR
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: Plugin
+#          path: sonar-groovy-plugin/target/sonar-groovy-plugin*.jar
