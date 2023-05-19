@@ -207,13 +207,18 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.3</version>
-          <configuration>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-            <tagNameFormat>@{project.version}</tagNameFormat>
-            <goals>install</goals>
-          </configuration>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.1</version>
+          <executions>
+            <execution>
+              <configuration>
+                <attach>false</attach>
+              </configuration>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>

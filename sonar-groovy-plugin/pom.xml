@@ -109,6 +109,21 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <configuration>
+              <attach>false</attach>
+            </configuration>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.3.0</version>
         <executions>
@@ -124,36 +139,18 @@
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                    <exclude>META-INF/*</exclude>
+                  </excludes>
                 </filter>
               </filters>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      <!--plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-plugin-size</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <phase>verify</phase>
-            <configuration>
-              <rules>
-                <requireFilesSize>
-                  <maxsize>20000000</maxsize>
-                  <minsize>11000000</minsize>
-                  <files>
-                    <file>${project.build.directory}/${project.build.finalName}.jar</file>
-                  </files>
-                </requireFilesSize>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin-->
     </plugins>
   </build>
 </project>
