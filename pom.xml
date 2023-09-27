@@ -153,6 +153,14 @@
       <name>SonarSource Bintray Release repository</name>
       <url>https://dl.bintray.com/sonarsource/SonarQube</url>
     </repository>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/forge-MAIF/sonar-groovy</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <build>
