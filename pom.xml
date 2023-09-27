@@ -149,11 +149,11 @@
   </dependencyManagement>
 
   <repositories>
-    <repository>
+    <!--repository>
       <id>sonarsource-bintray</id>
       <name>SonarSource Bintray Release repository</name>
       <url>https://dl.bintray.com/sonarsource/SonarQube</url>
-    </repository>
+    </repository-->
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
