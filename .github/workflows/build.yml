@@ -46,6 +46,7 @@ jobs:
         with:
           bump_version_scheme: minor
           tag_prefix: ""
+          release_name: "Release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_VERSION: 10.2.0-SNAPSHOT
