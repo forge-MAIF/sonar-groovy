@@ -1,4 +1,5 @@
 name: Publish package to GitHub Packages
+
 on:
   release:
     types: [created]
@@ -22,6 +23,6 @@ jobs:
           distribution: 'adopt'
 
       - name: Publish package
-        run: mvn --batch-mode --no-transfer-progress -Dsonar.version=9.4.0.54424 deploy
+        run: mvn --batch-mode --no-transfer-progress deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
