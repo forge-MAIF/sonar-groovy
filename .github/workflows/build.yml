@@ -48,6 +48,8 @@ jobs:
           tag_prefix: ""
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: 10.2.0-SNAPSHOT
+          RELEASE_TAG: 10.2.0-SNAPSHOT
 
 #      - name: Upload Plugin JAR
 #        uses: actions/upload-artifact@v3
