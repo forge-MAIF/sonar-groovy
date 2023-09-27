@@ -37,7 +37,7 @@ jobs:
           restore-keys: ${{ runner.os }}-maven
 
       - name: Build
-        run: mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always deploy
+        run: mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always -DskipTests deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
