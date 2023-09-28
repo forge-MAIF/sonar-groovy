@@ -94,4 +94,3 @@ Please see the Git history for older changes
 [1.0.1]: https://github.com/Inform-Software/sonar-groovy/compare/1.0...1.0.1
 [1.0]: https://github.com/Inform-Software/sonar-groovy/compare/0.6...1.0
 [0.6]: https://github.com/Inform-Software/sonar-groovy/releases/tag/0.6
-

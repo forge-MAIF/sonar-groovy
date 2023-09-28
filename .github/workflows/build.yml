@@ -2,23 +2,13 @@ name: Build
 
 on:
   - push
-  - pull_request
 
 jobs:
   build:
-    strategy:
-      matrix:
-        java: [11, 17]
-        sonar:
-          - ""
-          - "9.4.0.54424"
-        include:
-          - java: 17
-            sonar: "9.4.0.54424"
-            archive: "yes"
-
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -29,7 +19,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: ${{ matrix.java }}
+          java-version: 17
           distribution: 'adopt'
 
       - name: Cache SonarCloud packages
@@ -47,15 +37,12 @@ jobs:
           restore-keys: ${{ runner.os }}-maven
 
       - name: Build
-        run: .github/ci-build.sh
+        run: |
+          VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
+          if [[ $GITHUB_REF_NAME != 'main' ]]; then
+            VERSION="${VERSION}-SNAPSHOT"
+          fi
+          mvn org.codehaus.mojo:versions-maven-plugin:2.14.2:set -DnewVersion=$VERSION -DprocessAllModules=true
+          mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always -DskipTests deploy
         env:
-          SONAR_VERSION: ${{ matrix.sonar }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Upload Plugin JAR
-        uses: actions/upload-artifact@v3
-        with:
-          name: Plugin
-          path: sonar-groovy-plugin/target/*.jar
-        if: matrix.archive == 'yes'

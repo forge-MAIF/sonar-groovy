@@ -27,3 +27,6 @@ Icon?
 Thumbs.db
 # Folder config file
 Desktop.ini
+/sonar-groovy-plugin/.flattened-pom.xml
+/.flattened-pom.xml
+/codenarc-converter/.flattened-pom.xml
