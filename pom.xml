@@ -10,8 +10,15 @@
 
   <groupId>org.sonarsource.groovy</groupId>
   <artifactId>groovy</artifactId>
-  <version>10.2.0-SNAPSHOT</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
+
+  <properties>
+    <orchestrator.version>3.11</orchestrator.version>
+    <sonar-plugin-api-impl>10.2.0.77647</sonar-plugin-api-impl>
+    <sonar-plugin-api>10.1.0.809</sonar-plugin-api>
+    <revision>10.2.0</revision>
+  </properties>
 
   <name>Sonar Groovy</name>
   <description>This plugin enables analysis of Groovy within SonarQube.</description>
@@ -74,12 +81,6 @@
       <uniqueVersion>false</uniqueVersion>
     </repository>
   </distributionManagement>
-
-  <properties>
-    <orchestrator.version>3.11</orchestrator.version>
-    <sonar-plugin-api-impl>10.2.0.77647</sonar-plugin-api-impl>
-    <sonar-plugin-api>10.1.0.809</sonar-plugin-api>
-  </properties>
 
   <dependencyManagement>
     <dependencies>
@@ -149,11 +150,6 @@
   </dependencyManagement>
 
   <repositories>
-    <!--repository>
-      <id>sonarsource-bintray</id>
-      <name>SonarSource Bintray Release repository</name>
-      <url>https://dl.bintray.com/sonarsource/SonarQube</url>
-    </repository-->
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
@@ -166,6 +162,41 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.5.0</version>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!--plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.5.0</version>>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin-->
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
@@ -205,6 +236,7 @@
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
+        <version>4.1</version>
         <configuration>
           <skip>true</skip>
         </configuration>

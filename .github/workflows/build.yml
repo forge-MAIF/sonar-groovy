@@ -42,13 +42,7 @@ jobs:
           if [[ $GITHUB_REF_NAME != 'main' ]]; then
             VERSION="${VERSION}-SNAPSHOT"
           fi
-          mvn org.codehaus.mojo:versions-maven-plugin:2.14.2:set -DnewVersion=$VERSION
+          mvn org.codehaus.mojo:versions-maven-plugin:2.14.2:set -DnewVersion=$VERSION -DprocessAllModules=true
           mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always -DskipTests deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-#      - name: Upload Plugin JAR
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: Plugin
-#          path: sonar-groovy-plugin/target/sonar-groovy-plugin*.jar
