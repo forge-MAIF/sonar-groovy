@@ -40,7 +40,7 @@ jobs:
         run: |
           VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
           if [[ $GITHUB_REF_NAME != 'main' ]]; then
-            VERSION = $VERSION + '-SNAPSHOT'
+            VERSION="${VERSION}-SNAPSHOT"
           fi
           mvn org.codehaus.mojo:versions-maven-plugin:2.14.2:set -DnewVersion=$VERSION
           mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always -DskipTests deploy
