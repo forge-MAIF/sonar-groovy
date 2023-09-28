@@ -37,7 +37,13 @@ jobs:
           restore-keys: ${{ runner.os }}-maven
 
       - name: Build
-        run: mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always -DskipTests deploy
+        run: |
+          VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
+          if [[ $GITHUB_REF_NAME != 'main' ]]; then
+            VERSION = $VERSION + '-SNAPSHOT'
+          fi
+          mvn org.codehaus.mojo:versions-maven-plugin:2.14.2:set -DnewVersion=$VERSION
+          mvn --batch-mode --no-transfer-progress --errors -Dstyle.color=always -DskipTests deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
