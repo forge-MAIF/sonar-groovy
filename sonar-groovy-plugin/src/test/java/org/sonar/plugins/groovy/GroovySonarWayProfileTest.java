@@ -1,6 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
+ * Copyright (C) 2010-2023 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,7 +44,7 @@ public class GroovySonarWayProfileTest {
     BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile =
         profileContext.profile(Groovy.KEY, "Sonar way");
     assertThat(profile.language()).isEqualTo(Groovy.KEY);
-    List<BuiltInQualityProfilesDefinition.BuiltInActiveRule> activeRules = profile.rules();
+    List<BuiltInActiveRule> activeRules = profile.rules();
     assertThat(activeRules).as("Expected number of rules in profile").hasSize(58);
     assertThat(profile.name()).isEqualTo("Sonar way");
 

@@ -1,6 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
+ * Copyright (C) 2010-2023 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,8 @@ package org.sonar.plugins.groovy.surefire;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.sensor.Sensor;
@@ -28,15 +30,13 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.config.Configuration;
 import org.sonar.api.scan.filesystem.PathResolver;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.groovy.foundation.Groovy;
 import org.sonar.plugins.groovy.surefire.api.SurefireUtils;
 
 @DependedUpon("surefire-java")
 public class GroovySurefireSensor implements Sensor {
 
-  private static final Logger LOGGER = Loggers.get(GroovySurefireSensor.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(GroovySurefireSensor.class);
 
   private final GroovySurefireParser groovySurefireParser;
   private final Configuration settings;
