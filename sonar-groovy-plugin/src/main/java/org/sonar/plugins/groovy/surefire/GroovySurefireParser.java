@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.xml.stream.XMLStreamException;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FilePredicates;
@@ -37,8 +39,6 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.utils.MessageException;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.groovy.foundation.Groovy;
 import org.sonar.plugins.groovy.surefire.data.SurefireStaxHandler;
 import org.sonar.plugins.groovy.surefire.data.UnitTestClassReport;
@@ -48,7 +48,7 @@ import org.sonar.plugins.groovy.utils.StaxParser;
 @ScannerSide
 public class GroovySurefireParser {
 
-  private static final Logger LOGGER = Loggers.get(GroovySurefireParser.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(GroovySurefireParser.class);
   private final Groovy groovy;
   private final FileSystem fs;
 

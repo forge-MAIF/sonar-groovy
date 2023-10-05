@@ -34,6 +34,8 @@ import org.apache.commons.io.FileUtils;
 import org.codenarc.CodeNarcRunner;
 import org.codenarc.rule.Violation;
 import org.codenarc.source.AbstractSourceCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.rule.ActiveRule;
 import org.sonar.api.batch.rule.ActiveRules;
@@ -45,27 +47,24 @@ import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.LoggerLevel;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.groovy.codenarc.CodeNarcXMLParser.CodeNarcViolation;
 import org.sonar.plugins.groovy.foundation.Groovy;
 import org.sonar.plugins.groovy.foundation.GroovyFileSystem;
-
+import ch.qos.logback.classic.Level;
 public class CodeNarcSensor implements Sensor {
 
   @Deprecated static final String CODENARC_REPORT_PATH = "sonar.groovy.codenarc.reportPath";
   static final String CODENARC_REPORT_PATHS = "sonar.groovy.codenarc.reportPaths";
 
-  private static final Logger LOG = Loggers.get(CodeNarcSensor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(CodeNarcSensor.class);
 
   private final ActiveRules activeRules;
   private final GroovyFileSystem groovyFileSystem;
 
   static {
     // Hide CodeNarc logs
-    Logger codeNarcLogger = Loggers.get(AbstractSourceCode.class);
-    codeNarcLogger.setLevel(LoggerLevel.ERROR);
+    ch.qos.logback.classic.Logger codeNarcLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(AbstractSourceCode.class);
+    codeNarcLogger.setLevel(Level.ERROR);
   }
 
   public CodeNarcSensor(ActiveRules activeRules, GroovyFileSystem groovyFileSystem) {
@@ -97,7 +96,7 @@ public class CodeNarcSensor implements Sensor {
       for (String path : codeNarcReportPaths) {
         File report = context.fileSystem().resolvePath(path);
         if (!report.isFile() || !report.exists()) {
-          LOG.warn("Groovy report " + CODENARC_REPORT_PATHS + " not found at {}", report);
+          LOG.warn("Groovy report not found");
         } else {
           reports.add(report);
         }
@@ -124,9 +123,7 @@ public class CodeNarcSensor implements Sensor {
           InputFile inputFile = inputFileFor(context, violation.getFilename());
           insertIssue(context, violation, activeRule.ruleKey(), inputFile);
         } else {
-          LOG.warn(
-              "No such rule in SonarQube, so violation from CodeNarc will be ignored: {}",
-              violation.getRuleName());
+          LOG.warn("No such rule in SonarQube, so violation from CodeNarc will be ignored");
         }
       }
     }
@@ -198,8 +195,7 @@ public class CodeNarcSensor implements Sensor {
               violation.getMessage(),
               groovyFile);
         } else {
-          LOG.warn(
-              "No such rule in SonarQube, so violation from CodeNarc will be ignored: {}", ruleKey);
+          LOG.warn("No such rule in SonarQube, so violation from CodeNarc will be ignored: " + ruleKey);
         }
       }
     }

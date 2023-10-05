@@ -44,7 +44,7 @@ public class GroovySonarWayProfileTest {
     BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile =
         profileContext.profile(Groovy.KEY, "Sonar way");
     assertThat(profile.language()).isEqualTo(Groovy.KEY);
-    List<BuiltInQualityProfilesDefinition.BuiltInActiveRule> activeRules = profile.rules();
+    List<BuiltInActiveRule> activeRules = profile.rules();
     assertThat(activeRules).as("Expected number of rules in profile").hasSize(58);
     assertThat(profile.name()).isEqualTo("Sonar way");
 

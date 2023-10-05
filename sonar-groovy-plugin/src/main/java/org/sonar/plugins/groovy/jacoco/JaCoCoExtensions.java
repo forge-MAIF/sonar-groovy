@@ -19,15 +19,16 @@
  */
 package org.sonar.plugins.groovy.jacoco;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 
 public class JaCoCoExtensions {
 
-  private static final Logger LOG = Loggers.get(JaCoCoExtensions.class);
+  private static final Logger LOG = LoggerFactory.getLogger(JaCoCoExtensions.class);
 
   private JaCoCoExtensions() {}
 

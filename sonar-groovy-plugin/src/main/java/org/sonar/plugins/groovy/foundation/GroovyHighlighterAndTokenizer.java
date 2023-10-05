@@ -35,17 +35,18 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.groovy.antlr.GroovySourceToken;
 import org.codehaus.groovy.antlr.parser.GroovyLexer;
 import org.codehaus.groovy.antlr.parser.GroovyTokenTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.cpd.NewCpdTokens;
 import org.sonar.api.batch.sensor.highlighting.NewHighlighting;
 import org.sonar.api.batch.sensor.highlighting.TypeOfText;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
+
 
 public class GroovyHighlighterAndTokenizer {
 
-  private static final Logger LOG = Loggers.get(GroovyHighlighterAndTokenizer.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GroovyHighlighterAndTokenizer.class);
 
   private static final int[] KEYWORDS = {
     GroovyLexer.LITERAL_as,

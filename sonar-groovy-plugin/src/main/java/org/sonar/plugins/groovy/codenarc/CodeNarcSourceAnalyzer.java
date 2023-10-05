@@ -32,12 +32,13 @@ import org.codenarc.results.Results;
 import org.codenarc.rule.Violation;
 import org.codenarc.ruleset.RuleSet;
 import org.codenarc.source.SourceString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
+
 
 public class CodeNarcSourceAnalyzer extends AbstractSourceAnalyzer {
-  private static final Logger LOG = Loggers.get(CodeNarcSourceAnalyzer.class);
+  private static final Logger LOG = LoggerFactory.getLogger(CodeNarcSourceAnalyzer.class);
 
   private final Map<InputFile, List<Violation>> violationsByFile = new HashMap<>();
   private final List<InputFile> sourceFiles;

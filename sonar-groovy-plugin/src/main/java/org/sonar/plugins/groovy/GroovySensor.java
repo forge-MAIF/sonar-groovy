@@ -39,6 +39,8 @@ import org.codehaus.groovy.antlr.parser.GroovyTokenTypes;
 import org.gmetrics.result.MetricResult;
 import org.gmetrics.result.NumberMetricResult;
 import org.gmetrics.resultsnode.ClassResultsNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.PropertyType;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputComponent;
@@ -53,8 +55,6 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.resources.Qualifiers;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.groovy.foundation.Groovy;
 import org.sonar.plugins.groovy.foundation.GroovyFileSystem;
 import org.sonar.plugins.groovy.foundation.GroovyHighlighterAndTokenizer;
@@ -64,7 +64,7 @@ public class GroovySensor implements Sensor {
 
   static final String IGNORE_HEADER_COMMENTS = "sonar.groovy.ignoreHeaderComments";
 
-  private static final Logger LOG = Loggers.get(GroovySensor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GroovySensor.class);
 
   private static final String CYCLOMATIC_COMPLEXITY_METRIC_NAME = "CyclomaticComplexity";
 
