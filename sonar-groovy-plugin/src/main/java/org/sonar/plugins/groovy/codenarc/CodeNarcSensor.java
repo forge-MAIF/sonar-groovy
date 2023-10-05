@@ -18,6 +18,7 @@
  */
 package org.sonar.plugins.groovy.codenarc;
 
+import ch.qos.logback.classic.Level;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -50,7 +51,7 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.plugins.groovy.codenarc.CodeNarcXMLParser.CodeNarcViolation;
 import org.sonar.plugins.groovy.foundation.Groovy;
 import org.sonar.plugins.groovy.foundation.GroovyFileSystem;
-import ch.qos.logback.classic.Level;
+
 public class CodeNarcSensor implements Sensor {
 
   @Deprecated static final String CODENARC_REPORT_PATH = "sonar.groovy.codenarc.reportPath";
@@ -63,7 +64,8 @@ public class CodeNarcSensor implements Sensor {
 
   static {
     // Hide CodeNarc logs
-    ch.qos.logback.classic.Logger codeNarcLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(AbstractSourceCode.class);
+    ch.qos.logback.classic.Logger codeNarcLogger =
+        (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(AbstractSourceCode.class);
     codeNarcLogger.setLevel(Level.ERROR);
   }
 
@@ -195,7 +197,8 @@ public class CodeNarcSensor implements Sensor {
               violation.getMessage(),
               groovyFile);
         } else {
-          LOG.warn("No such rule in SonarQube, so violation from CodeNarc will be ignored: " + ruleKey);
+          LOG.warn(
+              "No such rule in SonarQube, so violation from CodeNarc will be ignored: " + ruleKey);
         }
       }
     }

@@ -1,7 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Copyright (C) 2010-2023 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
 
-
 public class CodeNarcSourceAnalyzer extends AbstractSourceAnalyzer {
   private static final Logger LOG = LoggerFactory.getLogger(CodeNarcSourceAnalyzer.class);
 
@@ -59,7 +57,8 @@ public class CodeNarcSourceAnalyzer extends AbstractSourceAnalyzer {
     List<FileResults> results = new LinkedList<>();
     for (InputFile inputFile : sourceFiles) {
       try {
-        List<Violation> violations = collectViolations(new SourceString(inputFile.contents()), ruleSet);
+        List<Violation> violations =
+            collectViolations(new SourceString(inputFile.contents()), ruleSet);
         violationsByFile.put(inputFile, violations);
         FileResults result = new FileResults(inputFile.uri().toString(), violations);
         results.add(result);
@@ -78,5 +77,4 @@ public class CodeNarcSourceAnalyzer extends AbstractSourceAnalyzer {
   public Map<InputFile, List<Violation>> getViolationsByFile() {
     return violationsByFile;
   }
-
 }

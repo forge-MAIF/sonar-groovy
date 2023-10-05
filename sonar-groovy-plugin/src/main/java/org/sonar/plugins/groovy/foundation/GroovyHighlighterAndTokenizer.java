@@ -1,7 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Copyright (C) 2010-2023 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,7 +41,6 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.cpd.NewCpdTokens;
 import org.sonar.api.batch.sensor.highlighting.NewHighlighting;
 import org.sonar.api.batch.sensor.highlighting.TypeOfText;
-
 
 public class GroovyHighlighterAndTokenizer {
 
@@ -138,16 +136,15 @@ public class GroovyHighlighterAndTokenizer {
   };
 
   private static final int[] COMMENTS = {
-    GroovyLexer.ML_COMMENT,
-    GroovyLexer.SH_COMMENT,
-    GroovyLexer.SL_COMMENT
+    GroovyLexer.ML_COMMENT, GroovyLexer.SH_COMMENT, GroovyLexer.SL_COMMENT
   };
 
-  private static final List<TypeOfTextToTokenTypes> HIGHLIGHTING_MAPPING = Arrays.asList(
-    new TypeOfTextToTokenTypes(TypeOfText.KEYWORD, KEYWORDS),
-    new TypeOfTextToTokenTypes(TypeOfText.STRING, STRINGS),
-    new TypeOfTextToTokenTypes(TypeOfText.CONSTANT, CONSTANTS),
-    new TypeOfTextToTokenTypes(TypeOfText.COMMENT, COMMENTS));
+  private static final List<TypeOfTextToTokenTypes> HIGHLIGHTING_MAPPING =
+      Arrays.asList(
+          new TypeOfTextToTokenTypes(TypeOfText.KEYWORD, KEYWORDS),
+          new TypeOfTextToTokenTypes(TypeOfText.STRING, STRINGS),
+          new TypeOfTextToTokenTypes(TypeOfText.CONSTANT, CONSTANTS),
+          new TypeOfTextToTokenTypes(TypeOfText.COMMENT, COMMENTS));
 
   private final InputFile inputFile;
   private final File file;
@@ -162,7 +159,8 @@ public class GroovyHighlighterAndTokenizer {
     List<GroovyToken> tokens = new ArrayList<>();
     isAnnotation = false;
 
-    try (InputStreamReader streamReader = new InputStreamReader(new FileInputStream(file), context.fileSystem().encoding())) {
+    try (InputStreamReader streamReader =
+        new InputStreamReader(new FileInputStream(file), context.fileSystem().encoding())) {
       GroovyLexer groovyLexer = new GroovyLexer(streamReader);
       groovyLexer.setWhitespaceIncluded(true);
       TokenStream tokenStream = groovyLexer.plumb();
@@ -174,7 +172,14 @@ public class GroovyHighlighterAndTokenizer {
         TypeOfText typeOfText = typeOfText(type, text).orElse(null);
         GroovySourceToken gst = (GroovySourceToken) token;
         if (StringUtils.isNotBlank(text)) {
-          tokens.add(new GroovyToken(token.getLine(), token.getColumn(), gst.getLineLast(), gst.getColumnLast(), getImage(token, text), typeOfText));
+          tokens.add(
+              new GroovyToken(
+                  token.getLine(),
+                  token.getColumn(),
+                  gst.getLineLast(),
+                  gst.getColumnLast(),
+                  getImage(token, text),
+                  typeOfText));
         }
         token = tokenStream.nextToken();
         type = token.getType();
@@ -191,10 +196,22 @@ public class GroovyHighlighterAndTokenizer {
       NewHighlighting highlighting = context.newHighlighting().onFile(inputFile);
       for (GroovyToken groovyToken : tokens) {
         if (isNotTest) {
-          cpdTokens = cpdTokens.addToken(groovyToken.startLine, groovyToken.startColumn, groovyToken.endLine, groovyToken.endColumn, groovyToken.value);
+          cpdTokens =
+              cpdTokens.addToken(
+                  groovyToken.startLine,
+                  groovyToken.startColumn,
+                  groovyToken.endLine,
+                  groovyToken.endColumn,
+                  groovyToken.value);
         }
         if (groovyToken.typeOfText != null) {
-          highlighting = highlighting.highlight(groovyToken.startLine, groovyToken.startColumn, groovyToken.endLine, groovyToken.endColumn, groovyToken.typeOfText);
+          highlighting =
+              highlighting.highlight(
+                  groovyToken.startLine,
+                  groovyToken.startColumn,
+                  groovyToken.endLine,
+                  groovyToken.endColumn,
+                  groovyToken.typeOfText);
         }
       }
       highlighting.save();
@@ -206,9 +223,9 @@ public class GroovyHighlighterAndTokenizer {
 
   private String getImage(Token token, String text) {
     if (token.getType() == GroovyTokenTypes.STRING_LITERAL
-      || token.getType() == GroovyTokenTypes.STRING_CTOR_START
-      || token.getType() == GroovyTokenTypes.STRING_CTOR_MIDDLE
-      || token.getType() == GroovyTokenTypes.STRING_CTOR_END) {
+        || token.getType() == GroovyTokenTypes.STRING_CTOR_START
+        || token.getType() == GroovyTokenTypes.STRING_CTOR_MIDDLE
+        || token.getType() == GroovyTokenTypes.STRING_CTOR_END) {
       return "LITERAL";
     }
     return text;
@@ -243,10 +260,15 @@ public class GroovyHighlighterAndTokenizer {
     final int endLine;
     final int endColumn;
     final String value;
-    @Nullable
-    final TypeOfText typeOfText;
+    @Nullable final TypeOfText typeOfText;
 
-    public GroovyToken(int startLine, int startColumn, int endLine, int endColumn, String value, @Nullable TypeOfText typeOfText) {
+    public GroovyToken(
+        int startLine,
+        int startColumn,
+        int endLine,
+        int endColumn,
+        String value,
+        @Nullable TypeOfText typeOfText) {
       this.startLine = startLine;
       this.startColumn = startColumn - 1;
       this.endLine = endLine;

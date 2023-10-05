@@ -1,7 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Copyright (C) 2010-2023 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +26,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.FileSystem;
@@ -37,7 +35,9 @@ import org.sonar.api.scan.filesystem.PathResolver;
 public final class SurefireUtils {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SurefireUtils.class);
-  /** @since 1.7 */
+  /**
+   * @since 1.7
+   */
   public static final String SUREFIRE_REPORT_PATHS_PROPERTY = "sonar.junit.reportPaths";
 
   private SurefireUtils() {}
