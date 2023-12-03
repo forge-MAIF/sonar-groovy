@@ -15,9 +15,9 @@
 
   <properties>
     <orchestrator.version>3.11</orchestrator.version>
-    <sonar-plugin-api-impl>10.2.0.77647</sonar-plugin-api-impl>
-    <sonar-plugin-api>10.1.0.809</sonar-plugin-api>
-    <revision>10.2.0</revision>
+    <sonar-plugin-api-impl>10.3.0.82913</sonar-plugin-api-impl>
+    <sonar-plugin-api>10.3.0.1951</sonar-plugin-api>
+    <revision>10.3.0</revision>
   </properties>
 
   <name>Sonar Groovy</name>
