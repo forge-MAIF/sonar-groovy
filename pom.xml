@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>59.0.29</version>
+    <version>70.0.0.270</version>
   </parent>
 
   <groupId>org.sonarsource.groovy</groupId>
@@ -17,7 +17,7 @@
     <orchestrator.version>3.11</orchestrator.version>
     <sonar-plugin-api-impl>10.3.0.82913</sonar-plugin-api-impl>
     <sonar-plugin-api>10.3.0.1951</sonar-plugin-api>
-    <revision>10.3.0</revision>
+    <revision>10.3.1</revision>
   </properties>
 
   <name>Sonar Groovy</name>
