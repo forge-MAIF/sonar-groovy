@@ -17,6 +17,7 @@
   <properties>
     <sonar.pluginClass>org.sonar.plugins.groovy.GroovyPlugin</sonar.pluginClass>
     <sonar.pluginName>Groovy</sonar.pluginName>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -29,7 +30,6 @@
     <dependency>
       <groupId>org.sonarsource.api.plugin</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.ant</groupId>
