@@ -16,7 +16,11 @@
   <properties>
     <orchestrator.version>3.11</orchestrator.version>
     <sonar-plugin-api-impl>10.3.0.82913</sonar-plugin-api-impl>
-    <sonar-plugin-api>10.3.0.1951</sonar-plugin-api>
+    <!-- 
+      voir https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility 
+      pour connaitre la version de l'API par rapport à la version de sonarqube
+    -->
+    <sonar-plugin-api>10.2.0.1908</sonar-plugin-api>
     <revision>10.3.0</revision>
   </properties>
 
