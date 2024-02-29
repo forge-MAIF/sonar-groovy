@@ -15,13 +15,13 @@
 
   <properties>
     <orchestrator.version>3.11</orchestrator.version>
-    <sonar-plugin-api-impl>10.3.0.82913</sonar-plugin-api-impl>
-    <!-- 
-      voir https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility 
-      pour connaitre la version de l'API par rapport à la version de sonarqube
-    -->
-    <sonar-plugin-api>10.2.0.1908</sonar-plugin-api>
-    <revision>10.3.0</revision>
+	    <!-- 
+		voir https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility 
+		pour connaitre la version de l'API par rapport à la version de sonarqube
+		-->
+		<sonar-plugin-api>10.6.0.2114</sonar-plugin-api>
+		<sonar-plugin-api-impl>10.4.1.88267</sonar-plugin-api-impl>
+    <revision>10.4.0</revision>
   </properties>
 
   <name>Sonar Groovy</name>
