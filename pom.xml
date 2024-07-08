@@ -19,9 +19,9 @@
 		voir https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility 
 		pour connaitre la version de l'API par rapport à la version de sonarqube
 		-->
-		<sonar-plugin-api>10.6.0.2114</sonar-plugin-api>
-		<sonar-plugin-api-impl>10.4.1.88267</sonar-plugin-api-impl>
-    <revision>10.4.0</revision>
+		<sonar-plugin-api>10.8.0.2329</sonar-plugin-api>
+		<sonar-plugin-api-impl>10.6.0.92116</sonar-plugin-api-impl>
+    <revision>10.6.0</revision>
   </properties>
 
   <name>Sonar Groovy</name>
