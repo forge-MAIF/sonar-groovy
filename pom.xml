@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>59.0.29</version>
+    <version>74.0.0.1768</version>
   </parent>
 
   <groupId>org.sonarsource.groovy</groupId>
@@ -19,7 +19,7 @@
 		voir https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility 
 		pour connaitre la version de l'API par rapport à la version de sonarqube
 		-->
-		<sonar-plugin-api>10.8.0.2329</sonar-plugin-api>
+		<sonar-plugin-api>10.7.0.2191</sonar-plugin-api>
 		<sonar-plugin-api-impl>10.6.0.92116</sonar-plugin-api-impl>
     <revision>10.6.0</revision>
   </properties>
