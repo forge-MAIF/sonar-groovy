@@ -167,15 +167,36 @@
                 <filter>
                   <artifact>*:*</artifact>
                   <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/LICENSE*</exclude>
+                    <exclude>META-INF/NOTICE*</exclude>
                     <exclude>META-INF/*.RSA</exclude>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>LICENSE*</exclude>
+                    <exclude>NOTICE*</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
                   </excludes>
                 </filter>
               </filters>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <configuration>
+          <pluginName>${sonar.pluginName}</pluginName>
+          <skipDependenciesPackaging>true</skipDependenciesPackaging>
+          <pluginClass>${sonar.pluginClass}</pluginClass>
+          <sonarLintSupported>false</sonarLintSupported>
+          <pluginApiMinVersion>9.14.0.375</pluginApiMinVersion>
+          <jreMinVersion>17</jreMinVersion>
+          <archive>
+            <manifestEntries>
+              <Implementation-Version>${revision}</Implementation-Version>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
   </build>
