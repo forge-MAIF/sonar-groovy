@@ -23,7 +23,7 @@
         -->
         <sonar-plugin-api>11.1.0.2693</sonar-plugin-api>
         <sonar-plugin-api-impl>25.1.0.102122</sonar-plugin-api-impl>
-        <revision>10.8.3</revision>
+        <revision>2025.1.0</revision>
     </properties>
 
     <name>Sonar Groovy</name>
