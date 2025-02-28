@@ -1,7 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Copyright (C) 2010-2025 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,8 +22,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Map;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sonar.api.batch.rule.ActiveRule;
 import org.sonar.api.batch.rule.ActiveRules;
 

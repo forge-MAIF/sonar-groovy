@@ -1,7 +1,6 @@
 /*
- * Sonar CodeNarc Converter
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Sonar Groovy Plugin
+ * Copyright (C) 2010-2025 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +18,7 @@
  */
 package org.sonar.plugins.groovy.codenarc;
 
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import com.google.common.collect.Lists;
 import difflib.Delta;
@@ -42,7 +41,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

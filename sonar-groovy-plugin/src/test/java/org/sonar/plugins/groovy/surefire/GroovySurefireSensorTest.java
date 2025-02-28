@@ -1,6 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
+ * Copyright (C) 2010-2025 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 package org.sonar.plugins.groovy.surefire;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;

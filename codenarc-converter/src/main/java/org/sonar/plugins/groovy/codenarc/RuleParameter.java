@@ -1,7 +1,6 @@
 /*
- * Sonar CodeNarc Converter
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Sonar Groovy Plugin
+ * Copyright (C) 2010-2025 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +19,7 @@
 package org.sonar.plugins.groovy.codenarc;
 
 import com.google.auto.value.AutoValue;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @AutoValue
 public abstract class RuleParameter implements Comparable<RuleParameter> {
