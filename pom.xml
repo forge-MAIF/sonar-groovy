@@ -21,8 +21,8 @@
         voir https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
         pour connaitre la version de l'API par rapport à la version de sonarqube
         -->
-        <sonar-plugin-api>10.12.0.2522</sonar-plugin-api>
-        <sonar-plugin-api-impl>10.7.0.96327</sonar-plugin-api-impl>
+        <sonar-plugin-api>11.1.0.2693</sonar-plugin-api>
+        <sonar-plugin-api-impl>25.1.0.102122</sonar-plugin-api-impl>
         <revision>10.8.3</revision>
     </properties>
 
