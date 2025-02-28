@@ -1,7 +1,6 @@
 /*
- * Sonar CodeNarc Converter
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Sonar Groovy Plugin
+ * Copyright (C) 2010-2025 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,17 +19,14 @@
 package org.sonar.plugins.groovy.codenarc.printer;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sonar.plugins.groovy.codenarc.*;
 import org.sonar.plugins.groovy.codenarc.parser.RuleParserResult;
 
@@ -43,8 +39,8 @@ public final class XMLPrinter {
   public XMLPrinter process(RuleParserResult result) throws IOException {
     StringBuilder xmlStringBuilder = new StringBuilder();
 
-
-    xmlStringBuilder.append("<!-- Generated using CodeNarc " + result.getCodeNarcVersion() + " -->");
+    xmlStringBuilder.append(
+        "<!-- Generated using CodeNarc " + result.getCodeNarcVersion() + " -->");
     xmlStringBuilder.append(LINE_SEPARATOR);
 
     start(xmlStringBuilder);

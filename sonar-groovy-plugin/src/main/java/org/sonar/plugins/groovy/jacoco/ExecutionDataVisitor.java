@@ -1,7 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Copyright (C) 2010-2025 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,11 +20,7 @@ package org.sonar.plugins.groovy.jacoco;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.jacoco.core.data.ExecutionData;
-import org.jacoco.core.data.ExecutionDataStore;
-import org.jacoco.core.data.IExecutionDataVisitor;
-import org.jacoco.core.data.ISessionInfoVisitor;
-import org.jacoco.core.data.SessionInfo;
+import org.jacoco.core.data.*;
 
 public class ExecutionDataVisitor implements ISessionInfoVisitor, IExecutionDataVisitor {
 
@@ -64,5 +59,4 @@ public class ExecutionDataVisitor implements ISessionInfoVisitor, IExecutionData
     System.arraycopy(src, 0, dest, 0, src.length);
     return new ExecutionData(data.getId(), data.getName(), dest);
   }
-
 }
