@@ -6,6 +6,11 @@ updates:
       interval: "weekly"
     ignore:
         - dependency-name: "org.codenarc:Codenarc"
+    groups:
+      dev-deps:
+        dependency-type: "development"
+      prod-deps:
+        dependency-type: "production"
 
   - package-ecosystem: "github-actions"
     directory: "/"
