@@ -122,7 +122,6 @@
         <dependency>
             <groupId>org.jacoco</groupId>
             <artifactId>org.jacoco.core</artifactId>
-            <version>0.8.12</version>
         </dependency>
     </dependencies>
 
