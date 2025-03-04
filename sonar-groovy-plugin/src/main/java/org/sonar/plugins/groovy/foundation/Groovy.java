@@ -25,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.sonar.api.config.Configuration;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.AbstractLanguage;
-import org.sonar.api.resources.Qualifiers;
 
 public class Groovy extends AbstractLanguage {
 
@@ -82,7 +81,7 @@ public class Groovy extends AbstractLanguage {
                 "Comma-separated list of suffixes for files to analyze. To not filter, leave the list empty.")
             .category(Groovy.NAME)
             .subCategory("Base")
-            .onQualifiers(Qualifiers.PROJECT)
+            .onConfigScopes(PropertyDefinition.ConfigScope.PROJECT)
             .defaultValue(DEFAULT_FILE_SUFFIXES)
             .multiValues(true)
             .build());

@@ -1,6 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2021 SonarQube Community
+ * Copyright (C) 2010-2025 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,6 @@ import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.Configuration;
 import org.sonar.api.config.PropertyDefinition;
-import org.sonar.api.resources.Qualifiers;
 import org.sonar.plugins.groovy.foundation.Groovy;
 
 @ScannerSide
@@ -79,7 +78,7 @@ public class JaCoCoConfiguration {
                 "Path to the JaCoCo report file containing coverage data by unit tests. The path may be absolute or relative to the project base directory.")
             .category(Groovy.NAME)
             .subCategory(SUBCATEGORY)
-            .onQualifiers(Qualifiers.PROJECT)
+            .onConfigScopes(PropertyDefinition.ConfigScope.PROJECT)
             .build(),
         PropertyDefinition.builder(JaCoCoConfiguration.IT_REPORT_PATH_PROPERTY)
             .defaultValue(JaCoCoConfiguration.IT_REPORT_PATH_DEFAULT_VALUE)
@@ -88,7 +87,7 @@ public class JaCoCoConfiguration {
                 "Path to the JaCoCo report file containing coverage data by integration tests. The path may be absolute or relative to the project base directory.")
             .category(Groovy.NAME)
             .subCategory(SUBCATEGORY)
-            .onQualifiers(Qualifiers.PROJECT)
+            .onConfigScopes(PropertyDefinition.ConfigScope.PROJECT)
             .build(),
         PropertyDefinition.builder(JaCoCoConfiguration.REPORT_MISSING_FORCE_ZERO)
             .defaultValue(
@@ -97,7 +96,7 @@ public class JaCoCoConfiguration {
             .description("Force coverage to 0% if no JaCoCo reports are found during analysis.")
             .category(Groovy.NAME)
             .subCategory(SUBCATEGORY)
-            .onQualifiers(Qualifiers.PROJECT)
+            .onConfigScopes(PropertyDefinition.ConfigScope.PROJECT)
             .type(PropertyType.BOOLEAN)
             .build(),
         PropertyDefinition.builder(SONAR_GROOVY_BINARIES)
@@ -106,7 +105,7 @@ public class JaCoCoConfiguration {
                 "Comma-separated list of optional directories that contain the compiled groovy sources.")
             .category(Groovy.NAME)
             .subCategory(SUBCATEGORY)
-            .onQualifiers(Qualifiers.PROJECT)
+            .onConfigScopes(PropertyDefinition.ConfigScope.PROJECT)
             .multiValues(true)
             .build());
   }
