@@ -148,7 +148,7 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>5.12.0</version>
+                <version>5.12.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -231,7 +231,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.6</version>
+                <version>5.0.0</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
@@ -242,7 +242,7 @@
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>5.0.0.4389</version>
+                    <version>5.1.0.4751</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
