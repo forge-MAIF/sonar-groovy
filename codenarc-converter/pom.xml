@@ -14,7 +14,7 @@
 
   <properties>
     <auto.version>1.11.0</auto.version>
-    <commonmark.version>0.24.0</commonmark.version>
+    <commonmark.version>0.26.0</commonmark.version>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.4.7-jre</version>
+      <version>33.4.8-jre</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -103,7 +103,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
-            <version>3.5.0</version>
+            <version>3.6.1</version>
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -111,7 +111,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.3</version>
+            <version>3.5.4</version>
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -134,7 +134,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.5.0</version>
+            <version>3.5.1</version>
             <executions>
               <execution>
                 <id>run-codenarc-converter</id>
