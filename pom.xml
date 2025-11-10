@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.sonarsource.parent</groupId>
         <artifactId>parent</artifactId>
-        <version>83.0.0.2369</version>
+        <version>84.0.0.3027</version>
     </parent>
 
     <groupId>org.sonarsource.groovy</groupId>
@@ -133,7 +133,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.20.0</version>
+                <version>2.21.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -148,7 +148,7 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>6.0.0</version>
+                <version>6.0.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -160,7 +160,7 @@
             <dependency>
                 <groupId>org.jacoco</groupId>
                 <artifactId>org.jacoco.core</artifactId>
-                <version>0.8.13</version>
+                <version>0.8.14</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

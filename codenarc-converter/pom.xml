@@ -14,7 +14,7 @@
 
   <properties>
     <auto.version>1.11.0</auto.version>
-    <commonmark.version>0.26.0</commonmark.version>
+    <commonmark.version>0.27.0</commonmark.version>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
@@ -134,7 +134,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.6.1</version>
+            <version>3.6.2</version>
             <executions>
               <execution>
                 <id>run-codenarc-converter</id>
