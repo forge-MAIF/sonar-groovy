@@ -1,7 +1,6 @@
 /*
- * Sonar CodeNarc Converter
- * Copyright (C) 2010-2021 SonarQube Community
- *  
+ * Sonar Groovy Plugin
+ * Copyright (C) 2010-2026 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +36,7 @@ public enum RuleSet {
   GROOVYISM("groovyism"), // new in 0.16
   IMPORTS("imports"),
   JDBC("jdbc"), // new in 0.14
+  JENKINS("jenkins"), // new in 3.x
   JUNIT("junit"),
   LOGGING("logging"),
   NAMING("naming"),

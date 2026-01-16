@@ -105,30 +105,18 @@
             <dependency>
                 <groupId>org.codenarc</groupId>
                 <artifactId>CodeNarc</artifactId>
-                <version>3.0.0</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-ant</artifactId>
-                    </exclusion>
-                </exclusions>
+                <version>3.7.0</version>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>org.apache.groovy</groupId>
                 <artifactId>groovy-all</artifactId>
-                <version>3.0.25</version>
+                <version>4.0.24</version>
                 <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>org.gmetrics</groupId>
-                <artifactId>GMetrics</artifactId>
-                <version>3.0.0</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-ant</artifactId>
-                    </exclusion>
-                </exclusions>
+                <artifactId>GMetrics-Groovy4</artifactId>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>

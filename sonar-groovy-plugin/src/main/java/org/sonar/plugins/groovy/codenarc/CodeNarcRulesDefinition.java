@@ -1,6 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2025 SonarQube Community
+ * Copyright (C) 2010-2026 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ package org.sonar.plugins.groovy.codenarc;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import org.apache.commons.io.IOUtils;
+import org.sonar.api.rules.RuleType;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
@@ -43,6 +44,17 @@ public class CodeNarcRulesDefinition implements RulesDefinition {
         CodeNarcRulesDefinition.class.getResourceAsStream("/org/sonar/plugins/groovy/rules.xml"),
         "UTF-8");
     addRemediationCost(repository.rules());
+
+    // Add a built-in rule to report Groovy lexer failures
+    NewRule lexerFailure = repository.createRule("lexer-failure");
+    lexerFailure
+        .setName("Groovy lexer failure")
+        .setHtmlDescription(
+            "Groovy lexer failed to tokenize this file, which prevents syntax highlighting and CPD tokens.\n"
+                + "Fix the Groovy syntax (e.g., unexpected character) so the file can be parsed.")
+        .setSeverity("MAJOR")
+        .setType(RuleType.BUG);
+
     repository.done();
   }
 
