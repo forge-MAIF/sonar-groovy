@@ -1,6 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2025 SonarQube Community
+ * Copyright (C) 2010-2026 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -72,7 +72,6 @@ public class CodeNarcProfileExporter {
 
   private void appendRule(ActiveRule activeRule) throws IOException {
     String ruleKey = activeRule.ruleKey().rule();
-    // SONARGROOV-40 : key of rule having null parameters have been suffixed with ".fixed"
     if (ruleKey.endsWith(".fixed")) {
       ruleKey = ruleKey.substring(0, ruleKey.length() - ".fixed".length());
     }
@@ -84,6 +83,10 @@ public class CodeNarcProfileExporter {
       for (Map.Entry<String, String> activeRuleParam : activeRule.params().entrySet()) {
         String value = activeRuleParam.getValue();
         if (StringUtils.isNotBlank(value)) {
+          // sanitize malformed patterns like: &apos;ignore|ignored
+          if ("ignoreRegex".equals(activeRuleParam.getKey())) {
+            value = value.replace("&apos;", "");
+          }
           writer
               .append("<property name=\"")
               .append(activeRuleParam.getKey())

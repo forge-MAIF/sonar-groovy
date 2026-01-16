@@ -1,6 +1,6 @@
 /*
  * Sonar Groovy Plugin
- * Copyright (C) 2010-2023 SonarQube Community
+ * Copyright (C) 2010-2026 SonarQube Community
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,13 +18,12 @@
  */
 package org.sonar.plugins.groovy;
 
-import groovyjarjarantlr.Token;
-import groovyjarjarantlr.TokenStream;
-import groovyjarjarantlr.TokenStreamException;
+import groovyjarjarantlr4.v4.runtime.CharStream;
+import groovyjarjarantlr4.v4.runtime.CharStreams;
+import groovyjarjarantlr4.v4.runtime.Token;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -33,9 +32,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
-import org.codehaus.groovy.antlr.GroovySourceToken;
-import org.codehaus.groovy.antlr.parser.GroovyLexer;
-import org.codehaus.groovy.antlr.parser.GroovyTokenTypes;
+import org.apache.groovy.parser.antlr4.GroovyLexer;
 import org.gmetrics.result.MetricResult;
 import org.gmetrics.result.NumberMetricResult;
 import org.gmetrics.resultsnode.ClassResultsNode;
@@ -163,25 +160,121 @@ public class GroovySensor implements Sensor {
     try (InputStreamReader streamReader =
         new InputStreamReader(groovyFile.inputStream(), groovyFile.charset())) {
       List<String> lines = IOUtils.readLines(groovyFile.inputStream(), groovyFile.charset());
-      GroovyLexer groovyLexer = new GroovyLexer(streamReader);
-      groovyLexer.setWhitespaceIncluded(true);
-      TokenStream tokenStream = groovyLexer.plumb();
-      Token token = tokenStream.nextToken();
-      Token nextToken = tokenStream.nextToken();
-      while (nextToken.getType() != Token.EOF_TYPE) {
+      CharStream cs = CharStreams.fromReader(streamReader);
+      GroovyLexer groovyLexer = new GroovyLexer(cs);
+      groovyLexer.removeErrorListeners();
+      // Iterate tokens directly to avoid full fill() which may surface fatal syntax errors
+      Token token = groovyLexer.nextToken();
+      Token nextToken = groovyLexer.nextToken();
+      while (nextToken.getType() != Token.EOF) {
         handleToken(token, nextToken.getLine(), lines);
         token = nextToken;
-        nextToken = tokenStream.nextToken();
+        nextToken = groovyLexer.nextToken();
       }
+      // handle last token before EOF
       handleToken(token, nextToken.getLine(), lines);
       saveMetric(context, groovyFile, CoreMetrics.NCLOC, loc);
       saveMetric(context, groovyFile, CoreMetrics.COMMENT_LINES, comments);
-    } catch (TokenStreamException e) {
-      LOG.error("Unexpected token when lexing file: {}", groovyFile, e);
-    } catch (IOException e) {
-      LOG.error("Unable to read file: {}", groovyFile, e);
+    } catch (Throwable e) {
+      // Fallback: if Groovy lexer fails (e.g., unexpected char), compute metrics by simple line
+      // parsing
+      LOG.debug(
+          "Groovy lexer failed for {}: {}. Falling back to line-based metrics.",
+          groovyFile,
+          e.toString());
+      try {
+        List<String> lines = IOUtils.readLines(groovyFile.inputStream(), groovyFile.charset());
+        computeLineBasedMetrics(lines, context, groovyFile);
+      } catch (IOException ioException) {
+        LOG.error("Unable to read file for fallback: {}", groovyFile, ioException);
+      }
     }
     fileLinesContext.save();
+  }
+
+  // Simple line-based metrics when lexing fails: counts non-empty code lines and comment lines
+  // heuristically
+  private void computeLineBasedMetrics(
+      List<String> lines, SensorContext context, InputFile groovyFile) {
+    boolean inBlock = false;
+    for (int i = 0; i < lines.size(); i++) {
+      String raw = lines.get(i);
+      String line = raw == null ? "" : raw.trim();
+      int lineNo = i + 1;
+      if (line.isEmpty()) {
+        continue;
+      }
+      boolean isCommentLine = false;
+      if (inBlock) {
+        isCommentLine = true;
+        if (line.contains("*/")) {
+          inBlock = false;
+        }
+      } else if (line.startsWith("//") || line.startsWith("#")) {
+        isCommentLine = true;
+      } else if (line.startsWith("/*")) {
+        isCommentLine = true;
+        if (!line.contains("*/")) {
+          inBlock = true;
+        }
+      }
+
+      if (isCommentLine) {
+        if (isNotHeaderComment(lineNo)) {
+          comments++;
+        }
+      } else {
+        loc++;
+        fileLinesContext.setIntValue(CoreMetrics.NCLOC_DATA_KEY, lineNo, 1);
+      }
+    }
+    saveMetric(context, groovyFile, CoreMetrics.NCLOC, loc);
+    saveMetric(context, groovyFile, CoreMetrics.COMMENT_LINES, comments);
+  }
+
+  private void handleToken(Token token, int nextTokenLine, List<String> lines) {
+    int tokenType = token.getType();
+    int tokenLine = token.getLine();
+    if (isComment(tokenType, token)) {
+      if (isNotHeaderComment(tokenLine)) {
+        comments += nextTokenLine - tokenLine + 1 - numberEmptyLines(token, lines);
+      }
+    } else if (isNotWhitespace(tokenType, token) && tokenLine != currentLine) {
+      loc++;
+      fileLinesContext.setIntValue(CoreMetrics.NCLOC_DATA_KEY, tokenLine, 1);
+      currentLine = tokenLine;
+    }
+  }
+
+  private int numberEmptyLines(Token token, List<String> lines) {
+    String text = token.getText();
+    if (text == null) {
+      return 0;
+    }
+    String[] relatedLines = text.split("\r?\n");
+    long emptyLines =
+        Arrays.stream(relatedLines).map(String::trim).filter(EMPTY_COMMENT_LINES::contains).count();
+    return (int) emptyLines;
+  }
+
+  private static boolean isNotWhitespace(int tokenType, Token token) {
+    String name = new GroovyLexer(null).getVocabulary().getSymbolicName(tokenType);
+    if (name != null && ("WS".equals(name) || name.contains("NL") || name.contains("NLS"))) {
+      return false;
+    }
+    String text = token.getText();
+    return text != null && text.trim().length() > 0;
+  }
+
+  private static boolean isComment(int tokenType, Token token) {
+    String name = new GroovyLexer(null).getVocabulary().getSymbolicName(tokenType);
+    if (name == null) {
+      return false;
+    }
+    return name.endsWith("COMMENT")
+        || "ML_COMMENT".equals(name)
+        || "SL_COMMENT".equals(name)
+        || "SH_COMMENT".equals(name);
   }
 
   private static void highlightFiles(SensorContext context, List<InputFile> inputFiles) {
@@ -195,55 +288,8 @@ public class GroovySensor implements Sensor {
     context.<T>newMeasure().withValue(value).forMetric(metric).on(inputComponent).save();
   }
 
-  private void handleToken(Token token, int nextTokenLine, List<String> lines) {
-    int tokenType = token.getType();
-    int tokenLine = token.getLine();
-    if (isComment(tokenType)) {
-      if (isNotHeaderComment(tokenLine)) {
-        comments += nextTokenLine - tokenLine + 1 - numberEmptyLines(token, lines);
-      }
-    } else if (isNotWhitespace(tokenType) && tokenLine != currentLine) {
-      loc++;
-      fileLinesContext.setIntValue(CoreMetrics.NCLOC_DATA_KEY, tokenLine, 1);
-      currentLine = tokenLine;
-    }
-  }
-
-  private int numberEmptyLines(Token token, List<String> lines) {
-    List<String> relatedLines = getLinesFromToken(lines, (GroovySourceToken) token);
-    long emptyLines =
-        relatedLines.stream().map(String::trim).filter(EMPTY_COMMENT_LINES::contains).count();
-    return (int) emptyLines;
-  }
-
-  private static List<String> getLinesFromToken(List<String> lines, GroovySourceToken gst) {
-    List<String> newLines = new ArrayList<>(lines.subList(gst.getLine() - 1, gst.getLineLast()));
-
-    int lastLineIndex = newLines.size() - 1;
-    String lastLine = newLines.get(lastLineIndex).substring(0, gst.getColumnLast() - 1);
-    newLines.set(lastLineIndex, lastLine);
-
-    String firstLine = newLines.get(0).substring(gst.getColumn() - 1);
-    newLines.set(0, firstLine);
-
-    return newLines;
-  }
-
   private boolean isNotHeaderComment(int tokenLine) {
     return !(tokenLine == 1 && settings.getBoolean(IGNORE_HEADER_COMMENTS).orElse(true));
-  }
-
-  private static boolean isNotWhitespace(int tokenType) {
-    return !(tokenType == GroovyTokenTypes.WS
-        || tokenType == GroovyTokenTypes.STRING_NL
-        || tokenType == GroovyTokenTypes.ONE_NL
-        || tokenType == GroovyTokenTypes.NLS);
-  }
-
-  private static boolean isComment(int tokenType) {
-    return tokenType == GroovyTokenTypes.SL_COMMENT
-        || tokenType == GroovyTokenTypes.SH_COMMENT
-        || tokenType == GroovyTokenTypes.ML_COMMENT;
   }
 
   @Override

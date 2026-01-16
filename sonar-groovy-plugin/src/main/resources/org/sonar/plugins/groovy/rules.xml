@@ -1,4 +1,4 @@
-<!-- Generated using CodeNarc 2.2.0 -->
+<!-- Generated using CodeNarc 3.7.0 -->
 <rules>
   <!-- basic rules -->
 
@@ -14,7 +14,7 @@ hiding the original exception, if there is one.</p>
         try {
             doSomething()
         } finally {
-            assert count * 0        // violation
+            assert count &gt; 0        // violation
         }
     }
 </code></pre>
@@ -115,16 +115,16 @@ best practice to extract a temp variable.</p>
     <internalKey><![CDATA[BrokenNullCheck]]></internalKey>
     <description><![CDATA[<p>Looks for faulty checks for <em>null</em> that can cause a <code>NullPointerException</code>.</p>
 <p>Examples:</p>
-<pre><code>    if (name != null || name.length * 0) { }            // violation
+<pre><code>    if (name != null || name.length &gt; 0) { }            // violation
     if (name != null || name.length) { }                // violation
-    while (record == null &amp;&amp; record.id * 10) { }        // violation
+    while (record == null &amp;&amp; record.id &gt; 10) { }        // violation
     if (record == null &amp;&amp; record.id &amp;&amp; doStuff()) { }   // violation
-    def isNotValid = record == null &amp;&amp; record.id * 10   // violation
+    def isNotValid = record == null &amp;&amp; record.id &gt; 10   // violation
     return record == null &amp;&amp; !record.id                 // violation
 
-    if (name != null || name.size() * 0) { }            // violation
+    if (name != null || name.size() &gt; 0) { }            // violation
     if (string == null &amp;&amp; string.equals(&quot;&quot;)) { }        // violation
-    def isValid = name != null || name.size() * 0       // violation
+    def isValid = name != null || name.size() &lt; 0       // violation
     return name != null || !name.size()                 // violation
 </code></pre>
 ]]></description>
@@ -164,10 +164,10 @@ same problem.</p>
 <p>For more information see these links:</p>
 <ul>
 <li>
-<p><a href="http://blog.bjhargrave.com/2007/09/classforname-caches-defined-class-in.html">http://blog.bjhargrave.com/2007/09/classforname-caches-defined-class-in.html</a></p>
+<p><a href="https://blog.hargrave.dev/2007/09/classforname-caches-defined-class-in.html">https://blog.hargrave.dev/2007/09/classforname-caches-defined-class-in.html</a></p>
 </li>
 <li>
-<p><a href="http://www.osgi.org/blog/2011/05/what-you-should-know-about-class.html">http://www.osgi.org/blog/2011/05/what-you-should-know-about-class.html</a></p>
+<p><a href="https://blog.osgi.org/2011/05/what-you-should-know-about-class.html">https://blog.osgi.org/2011/05/what-you-should-know-about-class.html</a></p>
 </li>
 </ul>
 <p>Example of violations:</p>
@@ -190,11 +190,11 @@ compare two constants to each other or two literals that contain only constant v
 <p>Here are examples of code that produces a violation:</p>
 <pre><code>    23 == 67                    // violation
     Boolean.FALSE != false      // violation
-    23 * 88                     // violation
-    0.17 *= 0.99                // violation
-    &quot;abc&quot; * &quot;ddd&quot;               // violation
-    [Boolean.FALSE] *= [27]     // violation
-    [a:1] *=* [a:2]             // violation
+    23 &lt; 88                     // violation
+    0.17 &gt;= 0.99                // violation
+    &quot;abc&quot; &gt; &quot;ddd&quot;               // violation
+    [Boolean.FALSE] &gt;= [27]     // violation
+    [a:1] &lt;=&gt; [a:2]             // violation
 
     [1,2].equals([3,4])                                     // violation
     [a:123, b:true].equals(['a':222, b:Boolean.FALSE])      // violation
@@ -213,16 +213,16 @@ compare two constants to each other or two literals that contain only constant v
     <name><![CDATA[Comparison With Self]]></name>
     <internalKey><![CDATA[ComparisonWithSelf]]></internalKey>
     <description><![CDATA[<p>Checks for expressions where a <em>comparison operator</em> or <code>equals()</code> or <code>compareTo()</code> is used to compare a
-variable to itself, e.g.: <code>x == x, x != x, x \*=\* x, x \* x, x \*= x, x.equals(x) or x.compareTo(x)</code>, where
+variable to itself, e.g.: <code>x == x, x != x, x &lt;=&gt; x, x &gt; x, x &gt;= x, x.equals(x) or x.compareTo(x)</code>, where
 <code>x</code> is a variable.</p>
 <p>Here are examples of code that produces a violation:</p>
 <pre><code>    if (x == x) { }                 // violation
     if (x != x) { }                 // violation
-    while (x * x) { }               // violation
-    if (x *= x) { }                 // violation
-    while (x * x) { }               // violation
-    if (x *= x) { }                 // violation
-    def c = (x *=* x) { }           // violation
+    while (x &gt; x) { }               // violation
+    if (x &gt;= x) { }                 // violation
+    while (x &gt; x) { }               // violation
+    if (x &lt;= x) { }                 // violation
+    def c = (x &lt;=&gt; x) { }           // violation
     println isReady = x.equals(x)   // violation
     println x.compareTo(x)          // violation
 </code></pre>
@@ -440,7 +440,7 @@ matches this regex then no violations are produced.</p>
     <param>
       <key>ignoreRegex</key>
       <description><![CDATA[Regular expression - exception parameter names matching this regular expression are ignored and no violations are produced.]]></description>
-      <defaultValue>'ignore|ignored'</defaultValue>
+      <defaultValue>'ignore|ignored</defaultValue>
     </param>
   </rule>
 
@@ -502,7 +502,7 @@ matches this regex then no violations are produced.</p>
     <description><![CDATA[<p>Checks for empty <em>for</em> blocks. Empty <em>for</em> statements are confusing and serve no purpose.</p>
 <p>Here is an example of code that produces a violation:</p>
 <pre><code>    def myMethod() {
-        for (int i=0; i * 23; i++) {
+        for (int i=0; i &lt; 23; i++) {
             // empty
         }
     }
@@ -631,7 +631,7 @@ put <code>@Override</code> on a method implementing an interface. Use with Java 
     <severity>MINOR</severity>
     <name><![CDATA[Empty Try Block]]></name>
     <internalKey><![CDATA[EmptyTryBlock]]></internalKey>
-    <description><![CDATA[<p>Checks for empty <em>try</em> blocks. Empty <em>try</em> blocks are confusing and serve no purpose.</p>
+    <description><![CDATA[<p>Checks for empty <em>try</em> blocks. Empty <em>try</em> blocks are confusing and serve no purpose. This rule ignores all try-with-resources statements.</p>
 <p>Here is an example of code that produces a violation:</p>
 <pre><code>    def myMethod() {
         try {
@@ -757,7 +757,7 @@ within an application, it should be dealt with JVM options rather than within th
     <description><![CDATA[<p>A <code>for</code> loop without an init and update statement can be simplified to a <code>while</code> loop.</p>
 <p>Example of violations:</p>
 <pre><code>    int i = 0;
-    for(; i * 5;) {     // Violation
+    for(; i &lt; 5;) {     // Violation
         println i++
     }
 
@@ -765,11 +765,11 @@ within an application, it should be dealt with JVM options rather than within th
     for(i in [1,2])         // OK
        println i
 
-    for(int i = 0; i*5;)    // OK
+    for(int i = 0; i&lt;5;)    // OK
         println i++
 
     int i = 0;
-    for(; i * 5; i++)       // OK
+    for(; i &lt; 5; i++)       // OK
         println i
 
     for (Plan p : plans) {  // OK
@@ -1407,7 +1407,7 @@ property <code>applyToNonMainClasses</code> to true.</p>
 <pre><code>    /**
      * Return the calculated count of some stuff.
      *
-     * @param startIndex the starting index; must be *= 0
+     * @param startIndex the starting index; must be &lt;= 0
      * @return the full count
      * @exception RuntimeException                   // violation
      */
@@ -1467,7 +1467,7 @@ property <code>applyToNonMainClasses</code> to true.</p>
 <pre><code>    /**
      * Return the calculated count of some stuff.
      *
-     * @param startIndex the starting index; must be *= 0
+     * @param startIndex the starting index; must be &lt;= 0
      * @return the full count
      * @throws RuntimeException                   // violation
      */
@@ -1480,6 +1480,68 @@ property <code>applyToNonMainClasses</code> to true.</p>
       <description><![CDATA[Set to "true" to allow the tag content (name, description, etc.) to start on the following line. If false, that content must start on the same line as the tag.]]></description>
       <defaultValue>false</defaultValue>
     </param>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.comments.SpaceAfterCommentDelimiterRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Space After Comment Delimiter]]></name>
+    <internalKey><![CDATA[SpaceAfterCommentDelimiter]]></internalKey>
+    <description><![CDATA[<p>&lt;Since CodeNarc 3.3.0&gt;</p>
+<p>Checks that there is whitespace after comment delimiter (// and /*).</p>
+<p>Notes:</p>
+<ul>
+<li>Comments are not available as part of the Groovy AST, so this rule is implemented using regular expression searches. The rule uses some heuristics to avoid false positives, but can also miss some actual violations (i.e., false negatives).</li>
+<li>May cause violation for commented-out code (if there is no space after the comment delimiter)</li>
+</ul>
+<p>Example of violations:</p>
+<pre><code>    /**Bad1                                             // violation
+     *Ignored .. not a violation
+     *    @author Some Developer
+     */
+    class MyClass {//Bad4                               // violation
+        int countThings(int start) { //some comment     // violation
+            //Do stuff                                  // violation
+        } //comment                                     // violation
+    }
+    //Other comment                                     // violation
+    /*Single line comment*/                             // violation
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.comments.SpaceBeforeCommentDelimiterRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Space Before Comment Delimiter]]></name>
+    <internalKey><![CDATA[SpaceBeforeCommentDelimiter]]></internalKey>
+    <description><![CDATA[<p>&lt;Since CodeNarc 3.3.0&gt;</p>
+<p>Checks that there is whitespace before comment characters (// and /*)</p>
+<p>Notes:</p>
+<ul>
+<li>Comments are not available as part of the Groovy AST, so this rule is implemented using regular expression searches. The rule uses some heuristics to avoid false positives, but can also miss some actual violations (i.e., false negatives).</li>
+</ul>
+<p>Example of violations:</p>
+<pre><code>    import org.acme.Stuff/**                            // violation
+     *    @author Some Developer
+     */
+    class MyClass {// class comment                     // violation
+        /**
+         *Return the calculated count of some stuff,
+         */
+        int countThings(int startIndex) {// comment     // violation
+            int count = 3 +// first part                // violation
+            reduce(23)
+            amount = 3 + amount/*violation*/            // violation
+        }//comment                                      // violation
+        
+        int count = 3//Other comment                    // violation
+        String x = doStuff()/*Single line comment*/     // violation
+    }
+</code></pre>
+]]></description>
+    <tag>bug</tag>
   </rule>
 
   <!-- concurrency rules -->
@@ -1710,6 +1772,30 @@ within an outer <code>synchronized</code> statement does not cause a violation (
     <tag>multi-threading</tag>
   </rule>
 
+  <rule>
+    <key>org.codenarc.rule.concurrency.NoScriptBindingsRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[No Script Bindings]]></name>
+    <internalKey><![CDATA[NoScriptBindings]]></internalKey>
+    <description><![CDATA[<p>This rule reports occurrences of global variables that are bound to a script.</p>
+<p>These should be avoided as concurrent executions can modify and read the shared
+variable, leading to concurrency bugs.</p>
+<p>Examples (within a script):</p>
+<pre><code>    b = 1                       // violation
+    def myMethod() {
+        a = 1                   // violation
+    }
+
+    // These are fields and local variables; they are OK
+    int b = 1
+    def myMethod2() {
+        Integer a = 1
+    }
+</code></pre>
+]]></description>
+    <tag>multi-threading</tag>
+  </rule>
+
   <!-- since 0.13 -->
   <rule>
     <key>org.codenarc.rule.concurrency.StaticCalendarFieldRule</key>
@@ -1737,7 +1823,7 @@ serialization problems. Using an instance field or a <code>ThreadLocal</code> is
     // These usages are OK
     class MyCorrectClass {
         private final Calendar calendar1
-        static ThreadLocal*Calendar* calendar2
+        static ThreadLocal&lt;Calendar&gt; calendar2
     }
 </code></pre>
 ]]></description>
@@ -1801,7 +1887,7 @@ serialization problems. Using an instance field or a <code>ThreadLocal</code> is
     // These usages are OK
     class MyCorrectClass {
         private DateFormat calendar1
-        static ThreadLocal*DateFormat* calendar2
+        static ThreadLocal&lt;DateFormat&gt; calendar2
     }
 </code></pre>
 ]]></description>
@@ -1826,7 +1912,7 @@ instance across thread boundaries without proper synchronization will result in 
     // these usages are OK
     class MyCorrectClass {
       private Matcher matcher1
-      static ThreadLocal*Matcher* matcher2
+      static ThreadLocal&lt;Matcher&gt; matcher2
     }
 </code></pre>
 ]]></description>
@@ -1862,7 +1948,7 @@ serialization problems. Using an instance field or a <code>ThreadLocal</code> is
     // These usages are OK
     class MyCorrectClass {
         private SimpleDateFormat calendar1
-        static ThreadLocal*SimpleDateFormat* calendar2
+        static ThreadLocal&lt;SimpleDateFormat&gt; calendar2
     }
 </code></pre>
 ]]></description>
@@ -2086,7 +2172,6 @@ deadlock.</p>
     <description><![CDATA[<p>Synchronization on a String field can lead to deadlock. Constant Strings are interned and shared across all other
 classes loaded by the JVM. Thus, this could is locking on something that other code might also be locking. This could
 result in very strange and hard to diagnose blocking and deadlock behavior.</p>
-<p>See <a href="http://www.javalobby.org/java/forums/t96352.html">JETTY-352</a> and <a href="http://jira.codehaus.org/browse/JETTY-352">http://jira.codehaus.org/browse/JETTY-352</a>.</p>
 <p>Examples:</p>
 <pre><code>    class MyClass {
 
@@ -2732,7 +2817,7 @@ This check is disabled by setting <code>checkLastStatementImplicitElse</code> to
 Also checks if an explicit <code>it</code> parameter has been specified.</p>
 <p>Example of violations:</p>
 <pre><code>    def closureWithViolation = { it * 10 }
-    def closureWithViolationBecauseOfExplicitItParameter = { it -* it * 10}
+    def closureWithViolationBecauseOfExplicitItParameter = { it -&gt; it * 10}
 </code></pre>
 ]]></description>
     <tag>bug</tag>
@@ -2885,7 +2970,7 @@ a lowercase l. This is because 11l rendered in some fonts may look like 111 inst
     <param>
       <key>excludeRegex</key>
       <description><![CDATA[Regular expression matching the names of fields, variables, parameters or methods that can be preceded by the "def" keyword.]]></description>
-      <defaultValue>''</defaultValue>
+      <defaultValue>'</defaultValue>
     </param>
   </rule>
 
@@ -3014,7 +3099,7 @@ which is a confusing and questionable practice. Use a temporary variable instead
         b = 'new value'     // violation
     }
 
-    def myClosure1 = { int a, b -*
+    def myClosure1 = { int a, b -&gt;
         a = 123             // violation
     }
 </code></pre>
@@ -3043,6 +3128,10 @@ which is a confusing and questionable practice. Use a temporary variable instead
 </code></pre>
 ]]></description>
     <tag>bug</tag>
+    <param>
+      <key>ignoreMethodNames</key>
+      <description><![CDATA[Specifies one or more (comma-separated) method names that should be ignored. The named methods will not cause a rule violation, and will not contribute to causing a violation on another method. The names may optionally contain wildcards (*,?).]]></description>
+    </param>
   </rule>
 
   <!-- since 1.2 -->
@@ -3101,6 +3190,10 @@ static methods must be above private instance methods.</p>
 </code></pre>
 ]]></description>
     <tag>bug</tag>
+    <param>
+      <key>ignoreMethodNames</key>
+      <description><![CDATA[Specifies one or more (comma-separated) method names that should be ignored. The named methods will not cause a rule violation, and will not contribute to causing a violation on another method. The names may optionally contain wildcards (*,?).]]></description>
+    </param>
   </rule>
 
   <!-- since 0.17 -->
@@ -3145,18 +3238,21 @@ out of the ternary expression.</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Trailing Comma]]></name>
     <internalKey><![CDATA[TrailingComma]]></internalKey>
-    <description><![CDATA[<p>Check whether list and map literals contain optional trailing comma.
-Rationale: Putting this comma in make is easier
+    <description><![CDATA[<p>Check whether list and map literals contain an optional trailing comma.
+Rationale: Putting this comma in makes it easier
 to change the order of the elements or add new elements on the end.</p>
 <p>This is valid code:</p>
-<pre><code>  int[] array1 = [] // one line declaration
-  int[] array2 = [ // empty list
+<pre><code>  int[] array1 = []         // one line declaration
+  int[] array2 = [          // empty list
                  ]
-  int[] array3 = [1,2,3] // one line declaration
+  int[] array3 = [1,2,3]    // one line declaration
   int[] array4 = [1,
                   2,
-                  3, // contains trailing comma
+                  3,        // contains trailing comma
                  ]
+  int[] array5 = [1,
+                  2]        // last element followed by closing bracket on the same line
+                            // NOTE: This style actually violates the intention of this rule
 </code></pre>
 <p>Example of violations:</p>
 <pre><code>  int[] array2 = [1,
@@ -3505,7 +3601,7 @@ type. The corresponding interfaces should be used to specify the type instead.</
     }
 
     // Closure parameter
-    def closure = { PriorityQueue queue -* ... }      // violation
+    def closure = { PriorityQueue queue -&gt; ... }      // violation
 
     // Method return type
     GregorianCalendar calculateDate(int num) {        // violation
@@ -3584,24 +3680,24 @@ the same Java Virtual Machine.</em></p>
     <internalKey><![CDATA[NestedForLoop]]></internalKey>
     <description><![CDATA[<p>Reports classes with nested for loops.</p>
 <p>Example of violations:</p>
-<pre><code>for (int i = 0; i * 100; ++i) {
-    for (int j = 0; j * 100; ++j) { // violation
+<pre><code>for (int i = 0; i &lt; 100; ++i) {
+    for (int j = 0; j &lt; 100; ++j) { // violation
         println i + j
     }
 }
 
-for (int i = 0; i * 100; ++i) {
-    for (int j = 0; j * 100; ++j) { // violation
+for (int i = 0; i &lt; 100; ++i) {
+    for (int j = 0; j &lt; 100; ++j) { // violation
         println i + j
     }
-    for (int j = 0; j * 100; ++j) { // violation
+    for (int j = 0; j &lt; 100; ++j) { // violation
         println i + j
     }
 }
 
-for (int i = 0; i * 100; ++i) {
-    for (int j = 0; j * 100; ++j) { // violation
-        for (int k = 0; k * 100; ++k) { // violation
+for (int i = 0; i &lt; 100; ++i) {
+    for (int j = 0; j &lt; 100; ++j) { // violation
+        for (int k = 0; k &lt; 100; ++k) { // violation
             println i + j + k
         }
     }
@@ -4017,12 +4113,12 @@ annotation.</p>
     <param>
       <key>ignoreStrings</key>
       <description><![CDATA[The optional comma-separated list of Strings that should be ignored (i.e., not cause a violation).]]></description>
-      <defaultValue>'' (empty string)</defaultValue>
+      <defaultValue>'' (empty string</defaultValue>
     </param>
     <param>
       <key>ignoreStringsDelimiter</key>
       <description><![CDATA[The delimiter char for "ignoreStrings".]]></description>
-      <defaultValue>, (comma)</defaultValue>
+      <defaultValue>, (comma</defaultValue>
     </param>
   </rule>
 
@@ -4423,13 +4519,13 @@ specific exception subclass instead.</p>
                                 // violation
     }
 
-    for (i = 0; i * 3; i++) {
+    for (i = 0; i &lt; 3; i++) {
         println i
                                 // violation
     }
 
     int j = 0
-    while (j * 3) {
+    while (j &lt; 3) {
       println j++
                                 // violation
     }
@@ -4463,7 +4559,7 @@ specific exception subclass instead.</p>
 
     def list = [
         123,
-        { id -*
+        { id -&gt;
                                 // Known limitation: should be a violation, but is not
         }
     ]
@@ -4495,13 +4591,13 @@ specific exception subclass instead.</p>
         println value
     }
 
-    for (i = 0; i * 3; i++) {
+    for (i = 0; i &lt; 3; i++) {
                                 // violation
         println i
     }
 
     int j = 0
-    while (j * 3) {
+    while (j &lt; 3) {
                                 // violation
       println j++
     }
@@ -4585,12 +4681,12 @@ line, but the <code>sameLine</code> property can be set to false to override thi
     <param>
       <key>elseOnSameLineAsClosingBrace</key>
       <description><![CDATA[If "true", then the else statement should be on the same line the same as sameLine as closing brace (})]]></description>
-      <defaultValue>the same as sameline</defaultValue>
+      <defaultValue>the same as samelin</defaultValue>
     </param>
     <param>
       <key>elseOnSameLineAsOpeningBrace</key>
       <description><![CDATA[If "true", then the else statement should be on the same line the same as sameLine as opening brace ({)]]></description>
-      <defaultValue>the same as sameline</defaultValue>
+      <defaultValue>the same as samelin</defaultValue>
     </param>
     <param>
       <key>sameLine</key>
@@ -4660,7 +4756,7 @@ the closing class brace, except:</p>
             }
 </code></pre>
 <p>If <em>ignoreSingleLineClasses</em> is <code>false</code> and <em>blankLineRequired</em> is <code>true</code></p>
-<pre><code>            class Foo extends Bar*String* { }
+<pre><code>            class Foo extends Bar&lt;String&gt; { }
 </code></pre>
 <p>If <em>ignoreSingleLineClasses</em> is <code>true</code> and <em>blankLineRequired</em> is <code>false</code></p>
 <pre><code>            class Foo {
@@ -4730,7 +4826,7 @@ the opening class brace, except:</p>
             }
 </code></pre>
 <p>If <em>ignoreSingleLineClasses</em> is <code>false</code> and <em>blankLineRequired</em> is <code>true</code></p>
-<pre><code>            class Foo extends Bar*String* { }
+<pre><code>            class Foo extends Bar&lt;String&gt; { }
 </code></pre>
 <p>If <em>ignoreSingleLineClasses</em> is <code>true</code> and <em>blankLineRequired</em> is <code>false</code></p>
 <pre><code>            class Foo {
@@ -4776,11 +4872,11 @@ the opening class brace, except:</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Closure Statement On Opening Line Of Multiple Line Closure]]></name>
     <internalKey><![CDATA[ClosureStatementOnOpeningLineOfMultipleLineClosure]]></internalKey>
-    <description><![CDATA[<p>Checks for closure logic on first line (after <code>-\</code>*) for a multi-line closure. That breaks the symmetry
+    <description><![CDATA[<p>Checks for closure logic on first line (after -&gt;) for a multi-line closure. That breaks the symmetry
 of indentation (if the subsequent statements are indented normally), and that first statement can be easily
 missed when reading the code.</p>
 <p>Example of violations:</p>
-<pre><code>    def closure = { name -* println name
+<pre><code>    def closure = { name -&gt; println name
         addToCounts()
         println “done” }
 </code></pre>
@@ -4797,6 +4893,11 @@ missed when reading the code.</p>
     <description><![CDATA[<p>Makes sure there are no consecutive lines that are either blank or whitespace only. This reduces the need to scroll
 further than necessary when reading code, and increases the likelihood that a logical block of code will fit on one
 screen for easier comprehension.</p>
+<p>Known Limitations:</p>
+<ul>
+<li>Will create <em>false positive</em> violation for consecutive blank lines within string literals. For those cases,
+configure the rule to skip that file (using <em>doNotApplyToFileNames</em> or <em>doNotApplyToFilesMatching</em> rule properties). See <a href="https://codenarc.org/codenarc-configuring-rules.html#standard-properties-for-configuring-rules">Standard Properties for Configuring Rules</a>. Note that the class-based rule properties are not available on this rule.</li>
+</ul>
 <p>Example of violation:</p>
 <pre><code>    def name
 
@@ -4872,13 +4973,29 @@ class MyClass {                                 // CORRECT
         }
     }
 }
+
+class MyClassSpec extends Specification {
+
+    void &quot;Test&quot;() {
+        when:
+        int x = 2 + 2   // CORRECT (default) or if `indentUnderLabel:false`
+
+        then:
+            x == 4      // violation unless `indentUnderLabel:true`
+    }
+
+}
 </code></pre>
 ]]></description>
     <tag>convention</tag>
     <param>
+      <key>indentUnderLabel</key>
+      <description><![CDATA[Indent code under labels (fx. Spock labels 'given:', 'when:', 'then:', ...)]]></description>
+      <defaultValue>fals</defaultValue>
+    </param>
+    <param>
       <key>spacesPerIndentLevel</key>
       <description><![CDATA[The number of spaces that make up a single level of indentation.]]></description>
-      <defaultValue>4</defaultValue>
     </param>
   </rule>
 
@@ -4914,7 +5031,7 @@ applyToFilesMatching and doNotApplyToFilesMatching.</p>
     <param>
       <key>length</key>
       <description><![CDATA[The maximum line length allowed.]]></description>
-      <defaultValue>120</defaultValue>
+      <defaultValue>12</defaultValue>
     </param>
   </rule>
 
@@ -5014,15 +5131,11 @@ for parameter list.</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Space After Method Call Name]]></name>
     <internalKey><![CDATA[SpaceAfterMethodCallName]]></internalKey>
-    <description><![CDATA[<p>Checks that there is no whitespace after the method name when a method call contains parenthesis or that there
-is at most one space after the method name if the call does not contain parenthesis.</p>
+    <description><![CDATA[<p>Checks that there is no whitespace after the method name when a method call contains parenthesis.</p>
 <p>Examples of violations:</p>
-<pre><code>    aMethod (&quot;arg&quot;) //violation
+<pre><code>    aMethod (&quot;arg&quot;)         // violation
     
-    aMethod  &quot;arg&quot; //violation
-    
-    throw new Exception () //violation
-    
+    throw new Exception ()  // violation
 </code></pre>
 ]]></description>
     <tag>convention</tag>
@@ -5060,7 +5173,7 @@ and closure declaration parameter lists, method call parameter lists, Map litera
 
     def method1(int a,String b) { }             // violation on parameter b
 
-    def closure1 = { int a,String b -* }        // violation on parameter b
+    def closure1 = { int a,String b -&gt; }        // violation on parameter b
 
     def list1 = [a,b, c]                        // violation on list element b
 
@@ -5092,11 +5205,11 @@ null-safe operator (?.) does not cause a violation.</p>
     def matching = list.find { it.isReady() }.filter()  // no violation for dot operator
     assert list.every { it.isReady() }, &quot;Error&quot;         // no violation for comma
     def m = [a:123, b:{ println 7 },c:99]               // no violation for comma
-    closures.find { c -* c }()                          // no violation for opening parenthesis
+    closures.find { c -&gt; c }()                          // no violation for opening parenthesis
     processItems(list.select { it.isReady() })          // no violation for closing parenthesis
-    maps.find { m -* m[index] }[index]                  // no violation for opening square bracket
+    maps.find { m -&gt; m[index] }[index]                  // no violation for opening square bracket
     processItems([{ named(&quot;a&quot;) }, { named(&quot;b&quot;)}])       // no violation for closing square bracket
-    def names = records.findAll { it.age * 1 }*.name    // no violation for spread operator
+    def names = records.findAll { it.age &gt; 1 }*.name    // no violation for spread operator
     list?.collect { it?.type }?.join(',')               // no violation for null-safe operator
 </code></pre>
 ]]></description>
@@ -5117,7 +5230,7 @@ null-safe operator (?.) does not cause a violation.</p>
     <description><![CDATA[<p>Check that there is exactly one space (blank) after the <code>for</code> keyword and before the opening parenthesis.</p>
 <p>Examples of violations:</p>
 <pre><code>    for(name in names) { }                  // violation
-    for  (int i=0; i * 10; i++) { }         // violation
+    for  (int i=0; i &lt; 10; i++) { }         // violation
 </code></pre>
 ]]></description>
     <tag>convention</tag>
@@ -5176,7 +5289,7 @@ method/class/interface declarations, closure expressions and block statements.</
     if (ready) {
     } else {println 99}                         // violation
 
-    for (int i=0; i*10; i++) {println i }       // violation
+    for (int i=0; i&lt;10; i++) {println i }       // violation
 
     for (String name in names) {println name }  // violation
 
@@ -5188,7 +5301,7 @@ method/class/interface declarations, closure expressions and block statements.</
     } catch(Exception e) {x=77 }                // violation
     } finally {println 'error' }                // violation
 
-    list.each {name -* }                        // violation
+    list.each {name -&gt; }                        // violation
 
     shouldFail(Exception) {doStuff() }          // violation
 </code></pre>
@@ -5215,15 +5328,15 @@ method/class/interface declarations, closure expressions and block statements.</
     <description><![CDATA[<p>Check that there is at least one space (blank) or whitespace following a semicolon that separates:</p>
 <ul>
 <li>multiple statements on a single line</li>
-<li>the clauses within a classic for loop, e.g. for (i=0;i*10;i++)</li>
+<li>the clauses within a classic for loop, e.g. for (i=0;i&lt;10;i++)</li>
 </ul>
 <p>Examples of violations:</p>
 <pre><code>    def myMethod() {
         println 1;println 2                         // violation
-        def closure = { x -* doStuff();x = 23; }    // violation
+        def closure = { x -&gt; doStuff();x = 23; }    // violation
 
-        for (int i=0;i * 10;i++) {                  // violations (2)
-            for (int j=0; j * 10;j++) { }           // violation
+        for (int i=0;i &lt; 10;i++) {                  // violations (2)
+            for (int j=0; j &lt; 10;j++) { }           // violation
         }
     }
 </code></pre>
@@ -5271,17 +5384,17 @@ method/class/interface declarations, closure expressions and block statements.</
     <severity>MAJOR</severity>
     <name><![CDATA[Space Around Closure Arrow]]></name>
     <internalKey><![CDATA[SpaceAroundClosureArrow]]></internalKey>
-    <description><![CDATA[<p>Checks that there is at least one space (blank) or whitespace around each closure arrow (-*) symbol.</p>
+    <description><![CDATA[<p>Checks that there is at least one space (blank) or whitespace around each closure arrow (-&gt;) symbol.</p>
 <p>Known limitations:</p>
 <ul>
-<li>Does not catch violations if the closure arrow (-*) is on a separate line from the start of the closure.</li>
+<li>Does not catch violations if the closure arrow (-&gt;) is on a separate line from the start of the closure.</li>
 </ul>
 <p>Example of violations:</p>
-<pre><code>    def closure1 = {-*}                             // violation
-    def closure2 = { -*}                            // violation
-    def closure3 = {-* }                            // violation
-    def closure4 = { count-* println 123 }          // violation
-    def closure5 = { count, name -*println 123 }    // violation
+<pre><code>    def closure1 = {-&gt;}                             // violation
+    def closure2 = { -&gt;}                            // violation
+    def closure3 = {-&gt; }                            // violation
+    def closure4 = { count-&gt; println 123 }          // violation
+    def closure5 = { count, name -&gt;println 123 }    // violation
 </code></pre>
 ]]></description>
     <tag>convention</tag>
@@ -5307,12 +5420,12 @@ properties below.</p>
     <param>
       <key>characterAfterColonRegex</key>
       <description><![CDATA[The regular expression that must match the character after the colon (:) for a literal Map entry. For example, "/\S/" matches any non-whitespace character and "/\s/" matches any whitespace character (thus requiring a space or whitespace).]]></description>
-      <defaultValue>/\S/ (i.e., no space allowed after the colon)</defaultValue>
+      <defaultValue>/\S/ (i.e., no space allowed after the colon</defaultValue>
     </param>
     <param>
       <key>characterBeforeColonRegex</key>
       <description><![CDATA[The regular expression that must match the character before the colon (:) for a literal Map entry. For example, "/\S/" matches any non-whitespace character and "/\s/" matches any whitespace character (thus requiring a space or whitespace).]]></description>
-      <defaultValue>/\S/ (i.e., no space allowed before the colon)</defaultValue>
+      <defaultValue>/\S/ (i.e., no space allowed before the colon</defaultValue>
     </param>
   </rule>
 
@@ -5322,8 +5435,15 @@ properties below.</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Space Around Operator]]></name>
     <internalKey><![CDATA[SpaceAroundOperator]]></internalKey>
-    <description><![CDATA[<p>Check that there is at least one space (blank) or whitespace around each binary operator,
-including: +, -, *, /, **, **, &amp;&amp;, ||, &amp;, |, ?:, =, &quot;as&quot;.</p>
+    <description><![CDATA[<p>Check that there is at least one space (blank) or whitespace around each binary operator, including:</p>
+<ul>
+<li>Arithmetic operators: +, -, *, /, **</li>
+<li>Assignment operators: =, +=, -=, *=, /=, **=, ?=</li>
+<li>Relational operators: ==, !=, &gt;, &gt;=, &lt;, &lt;=, ===, !==</li>
+<li>Logical operators: &amp;&amp;, ||</li>
+<li>Bitwise operators: &amp;, |</li>
+<li>Other: ?:, &quot;as&quot;</li>
+</ul>
 <p>Do not check dot ('.') operator. Do not check unary operators (!, +, -, ++, --, ?.).
 Do not check array ('[') operator.</p>
 <p>Known limitations:</p>
@@ -5334,8 +5454,8 @@ Do not check array ('[') operator.</p>
 <p>Examples of violations:</p>
 <pre><code>    def myMethod() {
         3+ 5-x*23/ 100              // violation
-        list \*\*123                // violation
-        other\*\* writer            // violation
+        list &lt;&lt;123                // violation
+        other&lt;&lt; writer            // violation
         x=99                        // violation
         x&amp;&amp; y                       // violation
         x ||y                       // violation
@@ -5379,7 +5499,7 @@ method/class/interface declarations, closure expressions and block statements.</
     if (ready) {
     } else { return 9}                          // violation
 
-    for (int i=0; i*10; i++) { println i}       // violation
+    for (int i=0; i&lt;10; i++) { println i}       // violation
 
     for (String name in names) { println name}  // violation
 
@@ -5391,7 +5511,7 @@ method/class/interface declarations, closure expressions and block statements.</
     catch(Exception e) { logError(e)}           // violation
     finally { cleanUp()}                        // violation
 
-    list.each { name -* println name}           // violation
+    list.each { name -&gt; println name}           // violation
 
     shouldFail(Exception) { doStuff()}          // violation
 </code></pre>
@@ -5438,7 +5558,7 @@ brace ([), or a dollar sign ($) within a GString does not cause a violation.</p>
     if (ready) {
     } else{}                                    // violation
 
-    for (int i=0; i*10; i++){ }                 // violation
+    for (int i=0; i&lt;10; i++){ }                 // violation
 
     for (String name in names){ }               // violation
 
@@ -5455,7 +5575,7 @@ brace ([), or a dollar sign ($) within a GString does not cause a violation.</p>
     try {
     } finally{ }                                // violation
 
-    list.each{ name -* }                        // violation
+    list.each{ name -&gt; }                        // violation
 
     shouldFail(Exception){ doStuff() }          // violation
 </code></pre>
@@ -5801,7 +5921,7 @@ service classes which are singletons, by default, and so they should be reentran
 <p>This rule ignores <code>final</code> fields (either instance or static). Fields that are
 <code>static</code> and non-<code>final</code>, however, do cause a violation.</p>
 <p>This rule also ignores all classes annotated with the <code>@Immutable</code> transformation.
-See <a href="http://groovy.codehaus.org/Immutable+transformation">http://groovy.codehaus.org/Immutable+transformation</a>.</p>
+See <a href="https://groovy-lang.org/releasenotes/groovy-1.6.html#Groovy16releasenotes-Immutable">Immutable transform</a>.</p>
 <p>This rule also ignores all fields annotated with the <code>@Inject</code> or <code>@Value</code> annotations.</p>
 <p>You can configure this rule to ignore certain fields either by name or by type. This can be
 useful to ignore fields that hold references to (static) dependencies (such as DAOs or
@@ -6161,7 +6281,7 @@ that they should be stateless.</p>
 <ul>
 <li>All <code>final</code> fields (either instance or static). Note that fields that are <code>static</code> and non-<code>final</code>, however, do cause a violation.</li>
 <li>Non-<code>static</code> properties (i.e., no visibility modifier specified) declared with <code>def</code>.</li>
-<li>All classes annotated with the <code>@Immutable</code> transformation. See <a href="http://groovy.codehaus.org/Immutable+transformation">http://groovy.codehaus.org/Immutable+transformation</a>.</li>
+<li>All classes annotated with the <code>@Immutable</code> transformation. See <a href="https://groovy-lang.org/releasenotes/groovy-1.6.html#Groovy16releasenotes-Immutable">Immutable transformation</a>.</li>
 <li>All fields annotated with the <code>@Inject</code> annotation.</li>
 <li>All fields with names matching the <em>ignoreFieldNames</em> property.</li>
 <li>All fields with types matching the <em>ignoreFieldTypes</em> property.</li>
@@ -6220,7 +6340,7 @@ as the first method call in a series of chained method calls.</p>
 <p>Example of violations:</p>
 <pre><code>  def a = myList.sort()
   def b = myList.sort() { it }
-  def c = myList.sort().findAll { x * 1 }
+  def c = myList.sort().findAll { x &gt; 1 }
 </code></pre>
 ]]></description>
     <tag>groovyism</tag>
@@ -6242,9 +6362,9 @@ or when it appears as the first method call in a series of chained method calls.
   def x = myList.unique() { it }            // Single-argument: Closure
   def y = myList.unique { it % 2 }
 
-  def c = myList.unique().findAll { x * 1 } // Chained method call
+  def c = myList.unique().findAll { x &gt; 1 } // Chained method call
 
-  def comparator = { o1, o2 -* o1 *=* o2 }
+  def comparator = { o1, o2 -&gt; o1 &lt;=&gt; o2 }
   def x = myList.unique(comparator)         // Single-argument: Comparator
 
   def x = myList.unique(true)               // Single-argument: boolean true
@@ -6355,14 +6475,14 @@ criteria.</p>
     <name><![CDATA[Explicit Call To Compare To Method]]></name>
     <internalKey><![CDATA[ExplicitCallToCompareToMethod]]></internalKey>
     <description><![CDATA[<p>This rule detects when the <code>compareTo(Object)</code> method is called directly in code instead of using the
-*=*, *, *=, *, and *= operators. A groovier way to express this: <code>a.compareTo(b)</code> is this:
-<code>a \*\=\* b</code>, or using the other operators. Here are some other ways to write groovier code:</p>
+&lt;=&gt;, &lt;, &lt;=, &gt;, and &gt;= operators. A groovier way to express this: <code>a.compareTo(b)</code> is this:
+<code>a &lt;=&gt; b</code>, or using the other operators. Here are some other ways to write groovier code:</p>
 <pre><code>    a.compareTo(b) == 0               // can be replaced by: a == b
-    a.compareTo(b)                    // can be replaced by: a *=* b
-    a.compareTo(b) * 0                // can be replaced by: a * b
-    a.compareTo(b) *= 0               // can be replaced by: a *= b
-    a.compareTo(b) * 0                // can be replaced by: a * b
-    a.compareTo(b) *= 0               // can be replaced by: a *= b
+    a.compareTo(b)                    // can be replaced by: a &lt;=&gt; b
+    a.compareTo(b) &lt; 0                // can be replaced by: a &lt; b
+    a.compareTo(b) &lt;= 0               // can be replaced by: a &lt;= b
+    a.compareTo(b) &gt; 0                // can be replaced by: a &gt; b
+    a.compareTo(b) &gt;= 0               // can be replaced by: a &gt;= b
 </code></pre>
 <p>This rule can be  configured to ignore <code>this.compareTo(Object)</code> using the <em>ignoreThisReference</em>
 property. It defaults to <code>false</code>, so even <code>compareTo(x)</code> will trigger a violation.</p>
@@ -6424,7 +6544,7 @@ so even <code>getAt(x)</code> will trigger a violation.</p>
     <name><![CDATA[Explicit Call To Left Shift Method]]></name>
     <internalKey><![CDATA[ExplicitCallToLeftShiftMethod]]></internalKey>
     <description><![CDATA[<p>This rule detects when the <code>leftShift(Object)</code> method is called directly in code instead of using the
-** operator. A groovier way to express this: <code>a.leftShift(b)</code> is this: <code>a \*\* b</code>. This rule can be
+&lt;&lt; operator. A groovier way to express this: <code>a.leftShift(b)</code> is this: <code>a &lt;&lt; b</code>. This rule can be
 configured to ignore <code>this.leftShift(Object)</code> using the <em>ignoreThisReference</em> property. It defaults to
 <em>false</em>, so even <code>leftShift(x)</code> will trigger a violation.</p>
 <p>This rule also ignores all calls to <code>super.leftShift(Object)</code>.</p>
@@ -6545,10 +6665,14 @@ to <em>false</em>, so even <code>putAt(k, v)</code> will trigger a violation.</p
     <severity>MINOR</severity>
     <name><![CDATA[Explicit Call To Right Shift Method]]></name>
     <internalKey><![CDATA[ExplicitCallToRightShiftMethod]]></internalKey>
-    <description><![CDATA[<p>This rule detects when the <code>rightShift(Object)</code> method is called directly in code instead of using the
-** operator. A groovier way to express this: <code>a.rightShift(b)</code> is this: <code>a \*\* b</code>. This rule can be
+    <description><![CDATA[<p>This rule detects when the <code>rightShift(Object)</code> method is called directly in code instead of using the</p>
+<blockquote>
+<blockquote>
+<p>operator. A groovier way to express this: <code>a.rightShift(b)</code> is this: <code>a &gt;&gt; b</code>. This rule can be
 configured to ignore <code>this.rightShift(Object)</code> using the <em>ignoreThisReference</em> property. It defaults to
 <em>false</em>, so even <code>rightShift(x)</code> will trigger a violation.</p>
+</blockquote>
+</blockquote>
 <p>This rule also ignores all calls to <code>super.rightShift(Object)</code>.</p>
 ]]></description>
     <tag>groovyism</tag>
@@ -6784,6 +6908,15 @@ Consider calling <code>key.toString()</code>.</p>
     <internalKey><![CDATA[UseCollectMany]]></internalKey>
     <description><![CDATA[<p>In many case <code>collectMany()</code> yields the same result as <code>collect{}.flatten()</code>.
 It is easier to understand and more clearly conveys the intent.</p>
+<p>Limitations:</p>
+<ul>
+<li>The <code>collectMany()</code> method does not recursively flatten nested collections, unlike <code>collect().flatten()</code>.
+e.g.</li>
+</ul>
+<pre><code>     def l = [1, [2, 22], 3]
+     println l.collect{ [it, it*2] }.flatten() // [1, 2, 2, 22, 2, 22, 2, 22, 3, 6]
+     println l.collectMany{ [it, it*2] }       // [1, 2, [2, 22], [2, 22, 2, 22], 3, 6]
+</code></pre>
 <p>Example of violations:</p>
 <pre><code>def l = [1, 2, 3, 4]
 
@@ -6805,7 +6938,7 @@ l.collectMany{ [it, it*2] }       // same functionality, better readability
 <p>Example of violations:</p>
 <pre><code>def list = [1, 2, [3, 4, 5, 6], [7]]
 
-println list.collect { elem -*
+println list.collect { elem -&gt;
     if (elem instanceof List)
         elem.collect {it *2} // violation
     else elem * 2
@@ -7028,6 +7161,183 @@ import if there are multiple classes in the source file. In that case, the impor
     <tag>bug</tag>
   </rule>
 
+  <!-- jenkins rules -->
+
+  <!-- since 3.5.0 -->
+  <rule>
+    <key>org.codenarc.rule.jenkins.ClassNotSerializableRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Class Not Serializable]]></name>
+    <internalKey><![CDATA[ClassNotSerializable]]></internalKey>
+    <description><![CDATA[<p>Classes in Jenkins libraries should generally implement the Serializable interface because every expression/variable used in a CPS transformed method can potentially be serialized.
+Generally all user defined classes (not from external libraries) in pipeline libraries or Jenkinsfiles are already implicitly Serializable in Jenkins but it makes static analysis easier later on if all classes are marked Serializable explicitly.</p>
+<p>Example of violation:</p>
+<pre><code>class SomeClass {}
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+  </rule>
+
+  <!-- since 3.5.0 -->
+  <rule>
+    <key>org.codenarc.rule.jenkins.ClosureInGStringRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Closure In G String]]></name>
+    <internalKey><![CDATA[ClosureInGString]]></internalKey>
+    <description><![CDATA[<p>Closures are CPS transformed by Jenkins and will cause an error at runtime when used in GStrings.
+Typically they can be replaced by variable interpolation.
+Closures that are used as argument to method calls on the other hand are fine.
+See also the Jenkins docs about <a href="https://www.jenkins.io/doc/book/pipeline/cps-method-mismatches/#PipelineCPSmethodmismatches-ClosuresinsideGString">Closures inside GString</a>.</p>
+<p>Examples:</p>
+<pre><code>def s1 = &quot;some string ${-&gt; x}&quot; // Violation
+def s2 = &quot;some string ${x}&quot; // OK
+def s3 = &quot;some string ${ [1,2,3].collect { i -&gt; i * i }.toString() }&quot; // OK
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+  </rule>
+
+  <!-- since 3.5.0 -->
+  <rule>
+    <key>org.codenarc.rule.jenkins.CpsCallFromNonCpsMethodRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Cps Call From Non Cps Method]]></name>
+    <internalKey><![CDATA[CpsCallFromNonCpsMethod]]></internalKey>
+    <description><![CDATA[<p>CPS transformed methods may not be called from non CPS transformed methods in Jenkins.
+Every analyzed Method is assumed to be CPS transformed, except it is annotated with <code>com.cloudbees.groovy.cps.NonCPS</code>, is a constructor or a library method that is not configured in <code>cpsPackages</code>.
+Pipeline steps are assumed to be CPS transformed except for 'echo', 'properties' and 'getContext'.
+See also the Jenkins docs on <a href="https://www.jenkins.io/doc/book/pipeline/cps-method-mismatches/">Pipeline CPS Method Mismatches</a>.</p>
+<p>Known limitations:</p>
+<ul>
+<li>Methods are only checked for their name, parameters are ignored. Therefore false positives are possible if two overloaded methods are both CPS and non CPS transformed respectively.</li>
+<li>Because of their dynamic nature, pipeline steps can only be recognized if they are called on a predefined script variable (default is <code>script</code>).</li>
+<li>Method calls on dynamic types (Object) can't be resolved.</li>
+</ul>
+<p>Examples:</p>
+<pre><code>class SomeClass() {
+    public int value = cpsMethod() // Violation
+    SomeClass() {}
+}
+
+@NonCPS
+void nonCpsMethod() {}
+
+void cpsMethod() {}
+
+@NonCPS
+void someMethod() {
+    nonCpsMethod() // OK
+    new SomeClass() // OK
+    cpsMethod() // Violation
+    script.sh('echo hello') // Violation
+}
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+    <param>
+      <key>cpsPackages</key>
+      <description><![CDATA[Package names of used Jenkins pipeline libraries]]></description>
+      <defaultValue>[</defaultValue>
+    </param>
+    <param>
+      <key>cpsScriptVariableName</key>
+      <description><![CDATA[Jenkins pipeline script variable name]]></description>
+      <defaultValue>'script</defaultValue>
+    </param>
+  </rule>
+
+  <!-- since 3.5.0 -->
+  <rule>
+    <key>org.codenarc.rule.jenkins.ExpressionInCpsMethodNotSerializableRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Expression In Cps Method Not Serializable]]></name>
+    <internalKey><![CDATA[ExpressionInCpsMethodNotSerializable]]></internalKey>
+    <description><![CDATA[<p>Every expression/variable in a CPS transformed method in Jenkins can potentially be serialized and should therefore implement the <code>Serializable</code> interface.</p>
+<p>Note: The interfaces <code>List</code>, <code>Map</code> and <code>Set</code> are treated as Serializable because nearly every implementation is <code>Serializable</code>.
+It would be bad codestyle to use the implementation as type (see <a href="./codenarc-rules-design.html#implementationastype-rule">ImplementationAsType Rule</a>).</p>
+<p>Known limitations:</p>
+<ul>
+<li>Dynamically typed variables can't be resolved</li>
+</ul>
+<p>Examples:</p>
+<pre><code>class SomeClass {}
+class SerializableClass implements Serializable {}
+
+SomeClass some = new SomeClass() // Violation
+SerializableClass ser = new SerializableClass() // OK 
+Map map = new HashMap&lt;String, String&gt;() //OK
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+  </rule>
+
+  <!-- since 3.5.0 -->
+  <rule>
+    <key>org.codenarc.rule.jenkins.ForbiddenCallInCpsMethodRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Forbidden Call In Cps Method]]></name>
+    <internalKey><![CDATA[ForbiddenCallInCpsMethod]]></internalKey>
+    <description><![CDATA[<p>Some methods from the standard library cannot be CPS transformed and therefore must not be called with CPS transformed closure arguments.
+See also the Jenkins docs on <a href="https://www.jenkins.io/doc/book/pipeline/cps-method-mismatches/#calling-non-cps-transformed-methods-with-cps-transformed-arguments">Calling non-CPS-transformed methods with CPS-transformed arguments</a></p>
+<p>Examples:</p>
+<pre><code>void cpsMethod() {
+    List l = [4,1,3]
+    l.sort { a, b -&gt; a &gt; b } // Violation
+    l.toSorted { a, b -&gt; a &gt; b } // Violation
+    &quot;hello&quot;.eachLine { l, n -&gt; println(l) } // Violation
+    &quot;hello&quot;.eachLine(2) { l, n -&gt; println(l) } // Violation
+}
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+  </rule>
+
+  <!-- since 3.5.0 -->
+  <rule>
+    <key>org.codenarc.rule.jenkins.ObjectOverrideOnlyNonCpsMethods</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Object Override Only Non Cps Methods]]></name>
+    <internalKey><![CDATA[ObjectOverrideOnlyNonCpsMethods]]></internalKey>
+    <description><![CDATA[<p>Overridden methods of the standard library (e.g. from java.lang.Object) are often called from there and therefore must not be CPS transformed in Jenkins.
+See also the Jenkins docs on <a href="https://www.jenkins.io/doc/book/pipeline/cps-method-mismatches/#overrides-of-non-cps-transformed-methods">Overrides of non-CPS-transformed methods</a>.</p>
+<p>Examples:</p>
+<pre><code>class SomeClass {
+
+    @Override // Violation
+    String toString() {
+        return ''
+    }
+
+    @NonCPS
+    @Override // OK
+    boolean equals(Object other) {
+        return false
+    }
+}
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+  </rule>
+
+  <!-- since 3.5.0 -->
+  <rule>
+    <key>org.codenarc.rule.jenkins.ParameterOrReturnTypeNotSerializableRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Parameter Or Return Type Not Serializable]]></name>
+    <internalKey><![CDATA[ParameterOrReturnTypeNotSerializable]]></internalKey>
+    <description><![CDATA[<p>Every parameter and return type has to implement the Serializable interface in Jenkins CPS tranformed Code.</p>
+<p>Examples:</p>
+<pre><code>class SomeClass {}
+class SerializableClass implements Serializable {}
+
+void method(int i, SomeClass s) {}                                // Violation
+SomeClass returnMethod() { return null }                          // Violation
+SerializableClass safeMethod(SerializableClass s) { return null } // OK
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+  </rule>
+
   <!-- junit rules -->
 
   <!-- since 0.13 -->
@@ -7237,7 +7547,7 @@ ending in 'Spec', 'Test', 'Tests' or 'TestCase'.</p>
     <param>
       <key>ignoreMethodsWithAnnotations</key>
       <description><![CDATA[Specifies one or more (comma-separated) annotation names. Methods annotated with the annotations are ignored by this rule.]]></description>
-      <defaultValue>After,AfterAll,AfterClass, AfterEach,Before,BeforeAll, BeforeClass,BeforeEach, Disabled,Ignore, Override,Test</defaultValue>
+      <defaultValue>After,AfterAll,AfterClass, AfterEach,Before,BeforeAll, BeforeClass,BeforeEach, Disabled,Ignore, Override,Tes</defaultValue>
     </param>
   </rule>
 
@@ -7343,7 +7653,7 @@ default value is this comma separated list of regular expressions:</p>
     <severity>MAJOR</severity>
     <name><![CDATA[JUnit Unnecessary Set Up]]></name>
     <internalKey><![CDATA[JUnitUnnecessarySetUp]]></internalKey>
-    <description><![CDATA[<p>Rule that checks checks for JUnit <code>setUp()</code> methods that contain only a call to
+    <description><![CDATA[<p>Rule that checks for JUnit <code>setUp()</code> methods that contain only a call to
 <code>super.setUp()</code>. The method is then unnecessary.</p>
 <p>This rule sets the default value of the <em>applyToClassNames</em> property to only match class names
 ending in 'Spec', 'Test', 'Tests' or 'TestCase'.</p>
@@ -7363,7 +7673,7 @@ ending in 'Spec', 'Test', 'Tests' or 'TestCase'.</p>
     <severity>MAJOR</severity>
     <name><![CDATA[JUnit Unnecessary Tear Down]]></name>
     <internalKey><![CDATA[JUnitUnnecessaryTearDown]]></internalKey>
-    <description><![CDATA[<p>Rule that checks checks for JUnit <code>tearDown()</code> methods that contain only a call to
+    <description><![CDATA[<p>Rule that checks for JUnit <code>tearDown()</code> methods that contain only a call to
 <code>super.tearDown()</code>. The method is then unnecessary.</p>
 <p>This rule sets the default value of the <em>applyToClassNames</em> property to only match class names
 ending in 'Spec', 'Test', 'Tests' or 'TestCase'.</p>
@@ -7431,6 +7741,48 @@ Spock <em>Specification</em> classes.</p>
             when: a *= 2
 
             then: a == 4
+        }
+    }
+</code></pre>
+]]></description>
+    <tag>junit</tag>
+    <param>
+      <key>specificationClassNames</key>
+      <description><![CDATA[Specifies one or more (comma-separated) class names that should be treated as Spock Specification classes. The class names may optionally contain wildcards (*,?), e.g. "*Spec".]]></description>
+    </param>
+    <param>
+      <key>specificationSuperclassNames</key>
+      <description><![CDATA[Specifies one or more (comma-separated) class names that should be treated as Spock Specification superclasses. In other words, a class that extends a matching class name is considered a Spock Specification . The class names may optionally contain wildcards (*,?), e.g. "*Spec".]]></description>
+      <defaultValue>*Specification</defaultValue>
+    </param>
+  </rule>
+
+  <!-- since 3.3.0 -->
+  <rule>
+    <key>org.codenarc.rule.junit.SpockMissingAssertRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Spock Missing Assert]]></name>
+    <internalKey><![CDATA[SpockMissingAssert]]></internalKey>
+    <description><![CDATA[<p>Spock treats all expressions on the first level of a then or expect block as an implicit assertion.
+However, everything inside if/for/switch/... blocks is not an implicit assert, just a useless comparison (unless wrapped by a <code>with</code> or <code>verifyAll</code>).</p>
+<p>This rule finds such expressions, where an explicit call to <code>assert</code> would be required. Please note that the rule might
+produce false positives, as it relies on method names to determine whether an expression has a boolean type or not.</p>
+<p>Example of violations:</p>
+<pre><code>    public class MySpec extends spock.lang.Specification {
+        def &quot;test passes - does not behave as expected&quot;() {
+            expect:
+            if (true) {
+                true == false // violation - is inside an if block, and therefore not treated as an implicit assertion by spock
+            }
+        }
+
+        def &quot;test fails - behaves as expected&quot;() {
+            expect:
+            if (true) {
+                with(new Object()) {
+                    true == false // no violation - expressions in with are treated as implicit assertions by spock
+                }
+            }
         }
     }
 </code></pre>
@@ -7759,7 +8111,7 @@ class name starts with an uppercase letter and is followed by zero or more word 
     <param>
       <key>regex</key>
       <description><![CDATA[Specifies the regular expression used to validate the class name. It is required and cannot be null or empty.]]></description>
-      <defaultValue>([A-Z]\w*\$?)*</defaultValue>
+      <defaultValue>([A-Z]\w*\$?)</defaultValue>
     </param>
   </rule>
 
@@ -7870,7 +8222,7 @@ popular Builder Pattern. If the 'build' method is in a class named *Builder then
     <param>
       <key>regex</key>
       <description><![CDATA[Specifies the default regular expression used to validate the method name. It is required and cannot be null or empty.]]></description>
-      <defaultValue>(build.|create.)</defaultValue>
+      <defaultValue>(build.*|create.*</defaultValue>
     </param>
   </rule>
 
@@ -7904,12 +8256,12 @@ regex in that list matching the modifiers for the field is the one that is appli
     <param>
       <key>regex</key>
       <description><![CDATA[Specifies the default regular expression used to validate the field name. It is required and cannot be null or empty.]]></description>
-      <defaultValue>[a-z][a-zA-Z0-9]*</defaultValue>
+      <defaultValue>[a-z][a-zA-Z0-9]</defaultValue>
     </param>
     <param>
       <key>staticFinalRegex</key>
       <description><![CDATA[Specifies the regular expression used to validate "static final" field names. It is optional. If not set, then "static final" fields are validated using finalRegex, staticRegex or regex.]]></description>
-      <defaultValue>[A-Z][A-Z0-9_]*</defaultValue>
+      <defaultValue>[A-Z][A-Z0-9_]</defaultValue>
     </param>
     <param>
       <key>staticRegex</key>
@@ -7965,7 +8317,7 @@ methods automatically created for Groovy scripts).</p>
     <param>
       <key>regex</key>
       <description><![CDATA[Specifies the regular expression used to validate the method name. It is required and cannot be null or empty.]]></description>
-      <defaultValue>[a-z]\w*</defaultValue>
+      <defaultValue>[a-z]\w</defaultValue>
     </param>
   </rule>
 
@@ -8013,7 +8365,7 @@ package name consists of only lowercase letters and numbers, separated by period
     <param>
       <key>regex</key>
       <description><![CDATA[Specifies the regular expression used to validate the package name. It is required and cannot be null or empty.]]></description>
-      <defaultValue>[a-z]+[a-z0-9](\.[a-z0-9]+)</defaultValue>
+      <defaultValue>[a-z]+[a-z0-9]*(\.[a-z0-9]+)</defaultValue>
     </param>
   </rule>
 
@@ -8052,7 +8404,7 @@ lowercase letter and contains only letters or numbers.</p>
     <param>
       <key>regex</key>
       <description><![CDATA[Specifies the regular expression used to validate the parameter name. It is required and cannot be null or empty.]]></description>
-      <defaultValue>[a-z][a-zA-Z0-9]*</defaultValue>
+      <defaultValue>[a-z][a-zA-Z0-9]</defaultValue>
     </param>
   </rule>
 
@@ -8084,12 +8436,12 @@ modifiers for the property is the one that is applied for the field name validat
     <param>
       <key>regex</key>
       <description><![CDATA[Specifies the default regular expression used to validate the property name. It is required and cannot be null or empty.]]></description>
-      <defaultValue>[a-z][a-zA-Z0-9]*</defaultValue>
+      <defaultValue>[a-z][a-zA-Z0-9]</defaultValue>
     </param>
     <param>
       <key>staticFinalRegex</key>
       <description><![CDATA[Specifies the regular expression used to validate "static final" property names. It is optional. If not set, then "static final" property are validated using finalRegex, staticRegex or regex.]]></description>
-      <defaultValue>[A-Z][A-Z0-9_]*</defaultValue>
+      <defaultValue>[A-Z][A-Z0-9_]</defaultValue>
     </param>
     <param>
       <key>staticRegex</key>
@@ -8122,7 +8474,7 @@ To restore that previous behavior, set <code>finalRegex</code> to <code>[A-Z][A-
     <param>
       <key>regex</key>
       <description><![CDATA[Specifies the regular expression used to validate the variable name. It is required and cannot be null or empty.]]></description>
-      <defaultValue>[a-z][a-zA-Z0-9]*</defaultValue>
+      <defaultValue>[a-z][a-zA-Z0-9]</defaultValue>
     </param>
   </rule>
 
@@ -8442,6 +8794,24 @@ Java won't let you reload old data.</p>
     <tag>bug</tag>
   </rule>
 
+  <!-- since 3.5.0 -->
+  <rule>
+    <key>org.codenarc.rule.serialization.NonSerializableFieldInSerializableClass</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Non Serializable Field In Serializable Class]]></name>
+    <internalKey><![CDATA[NonSerializableFieldInSerializableClass]]></internalKey>
+    <description><![CDATA[<p>All fields of a <code>Serializable</code> class should also implement <code>Serializable</code>.</p>
+<p>Examples:</p>
+<pre><code>class SerializableClass implements Serializable {
+    private SerializableClass field     // OK
+    private String field                // OK
+    private OtherClass otherField       // Violation
+}
+</code></pre>
+]]></description>
+    <tag>bug</tag>
+  </rule>
+
   <!-- size rules -->
 
   <rule>
@@ -8474,7 +8844,7 @@ declarations: = *= /= %= += **= **= &amp;= |= ^= `=</li>
 (prefix or postfix): ++ --</li>
 <li>Add one to the <em>branch</em> count for each function call or class method call.</li>
 <li>Add one to the <em>branch</em> count for each occurrence of the new operator.</li>
-<li>Add one to the <em>condition</em> count for each use of a conditional operator: == != *= *= * * <em>=</em> =~ ==~</li>
+<li>Add one to the <em>condition</em> count for each use of a conditional operator: == != &lt;= &gt;= &lt; &gt; &lt;=&gt; =~ ==~</li>
 <li>Add one to the <em>condition</em> count for each use of the following keywords: else case default try catch ?</li>
 <li>Add one to the <em>condition</em> count for each unary conditional expression.</li>
 </ul>
@@ -8486,7 +8856,6 @@ declarations: = *= /= %= += **= **= &amp;= |= ^= `=</li>
 eXcentia Sonar ABC Metric Plugin (for Java) includes a table of risk classifications for ABC scores for both methods and classes.</li>
 <li>See the <a href="http://gmetrics.sourceforge.net/gmetrics-AbcMetric.html">GMetrics ABC metric</a>.
 This includes a discussion of guidelines for interpreting <em>ABC</em> scores.</li>
-<li>This rule requires Groovy 1.6 (or later).</li>
 <li>This rule requires the GMetrics jar on the classpath. See <a href="http://gmetrics.sourceforge.net/">GMetrics</a>.</li>
 </ul>
 ]]></description>
@@ -8498,17 +8867,16 @@ This includes a discussion of guidelines for interpreting <em>ABC</em> scores.</
     <param>
       <key>maxClassAbcScore</key>
       <description><![CDATA[The maximum ABC score allowed for a class, calculated as the total ABC score of its methods or "closure fields". If zero or null, then do not check class-level scores.]]></description>
-      <defaultValue>0</defaultValue>
     </param>
     <param>
       <key>maxClassAverageMethodAbcScore</key>
       <description><![CDATA[The maximum average ABC score allowed for a class, calculated as the average score of its methods or "closure fields". If zero or null, then do not check class-level average scores.]]></description>
-      <defaultValue>60</defaultValue>
+      <defaultValue>6</defaultValue>
     </param>
     <param>
       <key>maxMethodAbcScore</key>
       <description><![CDATA[The maximum ABC score allowed for a single method (or "closure field"). If zero or null, then do not check method-level scores.]]></description>
-      <defaultValue>60</defaultValue>
+      <defaultValue>6</defaultValue>
     </param>
   </rule>
 
@@ -8523,7 +8891,7 @@ This includes a discussion of guidelines for interpreting <em>ABC</em> scores.</
     <param>
       <key>maxLines</key>
       <description><![CDATA[The maximum number of lines allowed in a class definition.]]></description>
-      <defaultValue>1000</defaultValue>
+      <defaultValue>100</defaultValue>
     </param>
   </rule>
 
@@ -8560,17 +8928,16 @@ value greater than this value is considered a violation.</p>
     <param>
       <key>maxClassAverageMethodCrapScore</key>
       <description><![CDATA[The maximum CRAP average metric value allowed for a class, calculated as the average CRAP value of its methods. If zero or null, then do not check the average class-level CRAP value.]]></description>
-      <defaultValue>30</defaultValue>
+      <defaultValue>3</defaultValue>
     </param>
     <param>
       <key>maxClassCrapScore</key>
       <description><![CDATA[The maximum total CRAP metric value allowed for a class, calculated as the total CRAP value of its methods. If zero or null, then do not check class-level CRAP value.]]></description>
-      <defaultValue>0</defaultValue>
     </param>
     <param>
       <key>maxMethodCrapScore</key>
       <description><![CDATA[The maximum CRAP metric value allowed for a single method. If zero or null, then do not check method-level complexity.]]></description>
-      <defaultValue>30</defaultValue>
+      <defaultValue>3</defaultValue>
     </param>
   </rule>
 
@@ -8614,7 +8981,6 @@ Add one (1) for each occurrence of each of the following:</em></p>
 <li>See the <a href="http://www.literateprogramming.com/mccabe.pdf">original paper describing Cyclomatic Complexity</a></li>
 <li>See the <a href="http://gmetrics.sourceforge.net/gmetrics-CyclomaticComplexityMetric.html">GMetrics Cyclomatic Complexity metric</a>.
 This includes a discussion of guidelines for interpreting <em>cyclomatic complexity</em> values.</li>
-<li>This rule requires Groovy 1.6 (or later).</li>
 <li>This rule requires the GMetrics jar on the classpath. See <a href="http://gmetrics.sourceforge.net/">GMetrics</a>.</li>
 </ul>
 ]]></description>
@@ -8626,17 +8992,16 @@ This includes a discussion of guidelines for interpreting <em>cyclomatic complex
     <param>
       <key>maxClassAverageMethodComplexity</key>
       <description><![CDATA[The maximum average cyclomatic complexity value allowed for a class, calculated as the average complexity of its methods or "closure fields". If zero or null, then do not check average class-level complexity.]]></description>
-      <defaultValue>20</defaultValue>
+      <defaultValue>2</defaultValue>
     </param>
     <param>
       <key>maxClassComplexity</key>
       <description><![CDATA[The maximum total cyclomatic complexity value allowed for a class, calculated as the total complexity of its methods or "closure fields". If zero or null, then do not check total class-level complexity.]]></description>
-      <defaultValue>0</defaultValue>
     </param>
     <param>
       <key>maxMethodComplexity</key>
       <description><![CDATA[The maximum cyclomatic complexity value allowed for a single method (or "closure field"). If zero or null, then do not check method-level complexity.]]></description>
-      <defaultValue>20</defaultValue>
+      <defaultValue>2</defaultValue>
     </param>
   </rule>
 
@@ -8654,7 +9019,7 @@ complexity and find a way to have more fine grained objects.</p>
     <param>
       <key>maxMethods</key>
       <description><![CDATA[The maximum number of methods allowed in a class definition.]]></description>
-      <defaultValue>30</defaultValue>
+      <defaultValue>3</defaultValue>
     </param>
   </rule>
 
@@ -8677,7 +9042,7 @@ complexity and find a way to have more fine grained objects.</p>
     <param>
       <key>maxLines</key>
       <description><![CDATA[The maximum number of lines allowed in a method definition.]]></description>
-      <defaultValue>100</defaultValue>
+      <defaultValue>10</defaultValue>
     </param>
   </rule>
 
@@ -8711,12 +9076,11 @@ does not cause a violation:</p>
     <param>
       <key>ignoreRegex</key>
       <description><![CDATA[Determines what is a builder call. For instance, closures nested on a method named createBuilder, a property named myBuilder, or a constructor call to object MyBuilder() do not produce violations.]]></description>
-      <defaultValue>.*(b|B)uilder</defaultValue>
+      <defaultValue>.*(b|B)uilde</defaultValue>
     </param>
     <param>
       <key>maxNestedBlockDepth</key>
       <description><![CDATA[The maximum number of nesting levels. A block or closure nested deeper than that number of levels is considered a violation.]]></description>
-      <defaultValue>5</defaultValue>
     </param>
   </rule>
 
@@ -8750,7 +9114,6 @@ does not cause a violation:</p>
     <param>
       <key>maxParameters</key>
       <description><![CDATA[The maximum number of parameters in method/constructor]]></description>
-      <defaultValue>5</defaultValue>
     </param>
   </rule>
 
@@ -9022,7 +9385,7 @@ condition frequently occurs when catching an exception for debugging purposes bu
 <code>list.collect { it.multiply(2) }</code> can be replaced by <code>list*.multiply(2)</code>.</p>
 <p>Examples of violations include:</p>
 <pre><code>    assert [1, 2, 3].collect { it.multiply(2) }
-    assert [1, 2, 3].collect { x -* x.multiply(2) }
+    assert [1, 2, 3].collect { x -&gt; x.multiply(2) }
     [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;].collect { it.bytes }
 </code></pre>
 <p>The following code does not produce violations:</p>
@@ -9036,7 +9399,7 @@ condition frequently occurs when catching an exception for debugging purposes bu
     [1, 2, 3].collect { println it; it.multiply(5) }
 
     // OK, closure has too many arguments
-    [1, 2, 3].collect { a, b -* a.multiply(b) }
+    [1, 2, 3].collect { a, b -&gt; a.multiply(b) }
 
     // OK, closure statement references parameter multiple times
     [1, 2, 3].collect { it.multiply(it) }
@@ -9678,7 +10041,7 @@ pointless and can be removed.</p>
     void init(String name, groovy.lang.Binding binding) { }     // violation
 
     // Closure parameter types
-    def writeCount = { java.io.Writer writer, int count -* }    // violation
+    def writeCount = { java.io.Writer writer, int count -&gt; }    // violation
 
     // Extends and implements
     class MyHashMap extends java.util.HashMap { }               // violation
@@ -9706,7 +10069,7 @@ pointless and can be removed.</p>
 </li>
 <li>
 <p>Does not catch unnecessary package references if they are the types of anonymous inner class
-definitions, for older versions of Groovy (* 1.7.10?). For instance,
+definitions, for older versions of Groovy (&lt; 1.7.10?). For instance,
 <code>def runnable = new java.lang.Runnable() { ... }</code>.</p>
 </li>
 </ul>
@@ -9735,15 +10098,15 @@ definitions, for older versions of Groovy (* 1.7.10?). For instance,
     <name><![CDATA[Unnecessary Public Modifier]]></name>
     <internalKey><![CDATA[UnnecessaryPublicModifier]]></internalKey>
     <description><![CDATA[<p>The 'public' modifier is not required on methods, constructors or classes.</p>
-<p>Because of Groovy parsing limitations, this rule ignores methods (and constructors) that include Generic types in the method declaration.</p>
+<p>Limitations:</p>
+<ul>
+<li>Because of Groovy parsing limitations, this rule ignores methods (and constructors) that include Generic types in the method declaration.</li>
+<li>This rule will not catch the <code>public</code> modifier if it is on a separate line from the rest of the declaration.</li>
+</ul>
 <p>Example of violations:</p>
-<pre><code>    // violation on class
-    public class MyClass {
-        // violation on constructor
-        public MyClass() {}
-
-        // violation on method
-        public void myMethod() {}
+<pre><code>    public class MyClass {              // violation on class
+        public MyClass() {}             // violation on constructor
+        public void myMethod() {}       // violation on method
     }
 </code></pre>
 ]]></description>
@@ -9862,7 +10225,8 @@ Any source line that even looks like it is a comment is ignored.</p>
     <internalKey><![CDATA[UnnecessarySetter]]></internalKey>
     <description><![CDATA[<p>Checks for explicit calls to setter methods which can, for the most part, be replaced by assignment to property.
 A setter is defined as a method call that matches set[A-Z] but not set[A-Z][A-Z] such as setURL().
-Setters take one method argument. Setter calls within an expression are ignored.</p>
+Setters take one method argument. Setter calls within an expression are ignored. Calls to static setter methods
+within the same class are ignored.</p>
 <p>These bits of code produce violations:</p>
 <pre><code>  x.setProperty(1)
   x.setProperty(this.getA())
@@ -9875,26 +10239,6 @@ Setters take one method argument. Setter calls within an expression are ignored.
   x.setSomething('arg1', 'arg2')        // Setter must have exactly one argument
   if (!file.setExecutable(true)) { }    // Set method called within expression
   def count = x.setCount(92)            // Set method called within expression
-</code></pre>
-]]></description>
-    <tag>clumsy</tag>
-  </rule>
-
-  <!-- since 0.15 -->
-  <rule>
-    <key>org.codenarc.rule.unnecessary.UnnecessarySubstringRule</key>
-    <severity>MAJOR</severity>
-    <name><![CDATA[Unnecessary Substring]]></name>
-    <internalKey><![CDATA[UnnecessarySubstring]]></internalKey>
-    <description><![CDATA[<p>NOTE: This rule is <em>deprecated</em> and will be removed in a future CodeNarc version. Its recommendation to use subscripts on
-strings is not always safe/valid. See <a href="https://github.com/CodeNarc/CodeNarc/issues/562">#562</a>.</p>
-<p>This rule finds usages of <code>String.substring(int)</code> and <code>String.substring(int, int)</code> that can be replaced by use of the
-subscript operator. For instance, <code>var.substring(5)</code> can be replaced with <code>var[5..-1]</code>.</p>
-<p>Note that the String.substring(beginIndex,endIndex) method specifies a range of beginIndex..endIndex-1, while
-Groovy's String subscript specifies an inclusive range. So, <code>&quot;123456&quot;.substring(1, 5)</code> is equivalent to <code>&quot;123456&quot;[1..4]</code>.</p>
-<p>Example of violations:</p>
-<pre><code>    myVar.substring(5)          // can use myVar[5..-1] instead
-    myVar.substring(1, 5)       // can use myVar[1..4] instead
 </code></pre>
 ]]></description>
     <tag>clumsy</tag>
@@ -9927,8 +10271,8 @@ These cases can be replaced by a simple boolean expression. Examples of violatio
 <pre><code>    x==99 ? true : false                    // can be replaced by: x==99
     x &amp;&amp; y ? true : false                   // can be replaced by: x &amp;&amp; y
     x||y ? false : true                     // can be replaced by: !(x||y)
-    x *= 1 ? true: false                    // can be replaced by: x *= 1
-    x * 99 ? Boolean.TRUE : Boolean.FALSE   // can be replaced by: x * 99
+    x &lt;= 1 ? true: false                    // can be replaced by: x &lt;= 1
+    x &lt; 99 ? Boolean.TRUE : Boolean.FALSE   // can be replaced by: x &lt; 99
     !x ? true : false                       // can be replaced by: !x
 </code></pre>
 <p>The rule also checks for ternary expressions where the <em>true</em> and <em>false</em> expressions are
@@ -10053,9 +10397,10 @@ include:</p>
 the UnusedPrivateMethodParameter rule) or methods marked @Override.</p>
 <ul>
 <li>
-<p>This rule ignores <code>main()</code> methods. In Groovy, the <code>main()** method can either specify a </code>void<code>return type or else omit a return type (be dynamically typed). The</code>main()** method must have exactly one
+<p>This rule ignores <code>main()</code> methods. In Groovy, the <code>main()</code> method can either specify a <code>void</code>
+return type or else omit a return type (be dynamically typed). The <code>main()</code> method must have exactly one
 parameter. That parameter can either be typed as <code>String[]</code> or else the type can be omitted
-(be dynamically typed). And the <code>main()** method must be </code>static`.</p>
+(be dynamically typed). And the <code>main()</code> method must be <code>static</code>.</p>
 </li>
 <li>
 <p>You can specify an ignore list of parameter names using the 'ignoreRegex' property. By default, a parameter
@@ -10102,12 +10447,12 @@ You can add your own ignore list using this property.</p>
     <param>
       <key>ignoreClassRegex</key>
       <description><![CDATA[Regex that specifies the names of the classes to skip checking.]]></description>
-      <defaultValue>'.*Category'</defaultValue>
+      <defaultValue>'.*Category</defaultValue>
     </param>
     <param>
       <key>ignoreRegex</key>
       <description><![CDATA[Regex that specifies the parameter names to ignore.]]></description>
-      <defaultValue>'ignore|ignored'</defaultValue>
+      <defaultValue>'ignore|ignored</defaultValue>
     </param>
   </rule>
 
@@ -10167,6 +10512,11 @@ For instance, to also ignore fields named 'fieldx', set the property to the 'fie
       <defaultValue>true</defaultValue>
     </param>
     <param>
+      <key>ignoreClassesAnnotatedWithNames</key>
+      <description><![CDATA[Specifies one or more (comma-separated) annotation names; any classes annotated with those should be ignored (i.e., should not cause a rule violation). The names may optionally contain wildcards (*,?).]]></description>
+      <defaultValue>Entity</defaultValue>
+    </param>
+    <param>
       <key>ignoreFieldNames</key>
       <description><![CDATA[Specifies one or more (comma-separated) field names that should be ignored (i.e., that should not cause a rule violation). The names may optionally contain wildcards (*,?).]]></description>
       <defaultValue>serialVersionUID</defaultValue>
@@ -10195,7 +10545,7 @@ members within other classes).</p>
     <param>
       <key>ignoreMethodsWithAnnotationNames</key>
       <description><![CDATA[Specifies one or more (comma-separated) annotation names that mark private methods that should be ignored (i.e., that should not cause a rule violation). The names may optionally contain wildcards (*,?).]]></description>
-      <defaultValue>''</defaultValue>
+      <defaultValue>'</defaultValue>
     </param>
   </rule>
 

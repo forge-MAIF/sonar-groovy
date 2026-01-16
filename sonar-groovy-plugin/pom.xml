@@ -58,15 +58,50 @@
         <dependency>
             <groupId>org.codenarc</groupId>
             <artifactId>CodeNarc</artifactId>
+            <version>3.7.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-xml</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-json</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-ant</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-templates</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Use Groovy 4 modules explicitly -->
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>4.0.24</version>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <type>pom</type>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-xml</artifactId>
+            <version>4.0.24</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-json</artifactId>
+            <version>4.0.24</version>
+        </dependency>
+        <!-- Align with parent: use GMetrics-Groovy4 to avoid Groovy 3 conflicts -->
         <dependency>
             <groupId>org.gmetrics</groupId>
-            <artifactId>GMetrics</artifactId>
+            <artifactId>GMetrics-Groovy4</artifactId>
         </dependency>
 
         <!-- unit tests -->
@@ -164,8 +199,8 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>false</shadedArtifactAttached>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <minimizeJar>true</minimizeJar>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <minimizeJar>false</minimizeJar>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -177,16 +212,32 @@
                                         <exclude>LICENSE*</exclude>
                                         <exclude>NOTICE*</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
+                                        <!-- Prevent accidental inclusion of Groovy 3 XML module from uber-jars -->
+                                        <exclude>META-INF/lib/groovy-xml-3*.jar</exclude>
+                                        <exclude>META-INF/lib/groovy-groovydoc-*.jar</exclude>
+                                        <exclude>META-INF/lib/groovy-ant-*.jar</exclude>
+                                        <exclude>META-INF/lib/groovy-templates-*.jar</exclude>
+                                        <exclude>META-INF/lib/groovy-docgenerator-*.jar</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
                             <artifactSet>
+                                <includes>
+                                    <!-- Only include Groovy 4 modules we depend on explicitly -->
+                                    <include>org.apache.groovy:groovy</include>
+                                    <include>org.apache.groovy:groovy-xml</include>
+                                    <include>org.apache.groovy:groovy-json</include>
+                                    <!-- Include CodeNarc for relocation into shaded namespace -->
+                                    <include>org.codenarc:CodeNarc</include>
+                                </includes>
                                 <excludes>
+                                    <!-- Exclude any Groovy 2/3 artifacts brought transitively -->
+                                    <exclude>org.codehaus.groovy:*</exclude>
                                     <exclude>org.sonarsource.sonarqube:sonar-plugin-api-impl</exclude>
-                                    <exclude>org.junit.platform</exclude>
-                                    <exclude>org.junit.jupiter</exclude>
-                                    <exclude>junit</exclude>
-                                    <exclude>org.jacoco</exclude>
+                                    <exclude>org.junit.platform:*</exclude>
+                                    <exclude>org.junit.jupiter:*</exclude>
+                                    <exclude>junit:junit</exclude>
+                                    <exclude>org.jacoco:*</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>
