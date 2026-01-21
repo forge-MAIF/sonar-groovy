@@ -199,8 +199,8 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>false</shadedArtifactAttached>
-                            <createDependencyReducedPom>true</createDependencyReducedPom>
-                            <minimizeJar>false</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <minimizeJar>true</minimizeJar>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
