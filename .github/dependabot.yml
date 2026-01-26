@@ -8,6 +8,7 @@ updates:
         - dependency-name: "org.codenarc:Codenarc"
         - dependency-name: "org.sonarsource.api.plugin:sonar-plugin-api"
         - dependency-name: "org.sonarsource.sonarqube:sonar-plugin-api-impl"
+        - dependency-name: "org.gmetrics:*"
     groups:
       dev-deps:
         dependency-type: "development"
