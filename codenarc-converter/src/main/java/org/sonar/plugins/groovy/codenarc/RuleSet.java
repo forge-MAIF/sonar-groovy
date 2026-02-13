@@ -37,6 +37,7 @@ public enum RuleSet {
   GROOVYISM("groovyism"), // new in 0.16
   IMPORTS("imports"),
   JDBC("jdbc"), // new in 0.14
+  JENKINS("jenkins"),
   JUNIT("junit"),
   LOGGING("logging"),
   NAMING("naming"),
