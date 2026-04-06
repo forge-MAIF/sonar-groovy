@@ -35,7 +35,7 @@
         <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
-            <version>1.10.15</version>
+            <version>1.10.16</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -110,7 +110,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.27</version>
+            <version>1.5.32</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -132,7 +132,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>3.5.5</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
